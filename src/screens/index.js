@@ -1,12 +1,5 @@
-export { default as Home } from './Home';
 export { default as Loginscreen } from './Loginscreen';
-export { default as MyCart } from './MyCart';
-export { default as ProductInfo } from './ProductInfo';
 export { default as Options } from './Options';
-export { default as Formdetails } from './Formdetails';
-export { default as Orderplaced } from './Orderplaced';
-export { default as Scanscreen } from './Scanscreen';
-export { default as Detailsscreen } from './Detailsscreen';
 export { default as CreateNotesheet } from './CreateNotesheet';
 // export { default as colors } from './colors';
 // export { default as colors } from './colors';

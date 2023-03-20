@@ -34,23 +34,23 @@ function MyTabBar({state, descriptors, navigation}) {
         <Hstack
           centered
           styles={{
-            height: 50,
-            backgroundColor: '#a9cae9',
+            height: 40,
+            backgroundColor: '#fafafa',
             paddingLeft: 15,
-            borderRadius: 20,
+            borderRadius: 5,
             borderWidth: 0.6,
             borderColor: '#cbae12',
             flex: 1,
           }}>
           <AntDesign
             name="search1"
-            size={25}
-            style={{color: '#ef233c99', marginLeft: 0}}
+            size={22}
+            style={{color: '#00000099', marginLeft: 0}}
           />
           <TextInput
             // ref={searchRef}
             placeholder="Search notesheet here..."
-            style={{flex: 1, marginLeft: 4, fontSize: 17}}
+            style={{flex: 1, marginLeft: 4, fontSize: 14}}
             value={search}
             onChangeText={txt => {
               // searchFilterFunction(txt);
@@ -60,8 +60,8 @@ function MyTabBar({state, descriptors, navigation}) {
         </Hstack>
         <TouchableOpacity
           style={{
-            height: 50,
-            width: 50,
+            height: 40,
+            width: 40,
             marginHorizontal: 10,
             backgroundColor: '#0b0aa230',
             borderRadius: 50,
@@ -73,8 +73,8 @@ function MyTabBar({state, descriptors, navigation}) {
           flex: 0,
           height: 40,
           flexDirection: 'row',
-          backgroundColor: 'blue',
-          borderBottomColor: 'green',
+          backgroundColor: '#ffffff',
+          borderBottomColor: '#ffffff',
           borderBottomWidth: 1,
         }}>
         {state.routes.map((route, index) => {
@@ -117,7 +117,7 @@ function MyTabBar({state, descriptors, navigation}) {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderBottomColor: isFocused ? 'brown' : 'transparent',
+                borderBottomColor: isFocused ? '#2A69AC' : 'transparent',
                 borderBottomWidth: 1,
                 marginBottom: -1,
               }}>
@@ -127,7 +127,7 @@ function MyTabBar({state, descriptors, navigation}) {
                   width: windowWidth / 3,
                   textAlign: 'center',
                   // ...subTextThic,
-                  color: isFocused ? '#0eff99' : '#abce9099',
+                  color: isFocused ? '#2A69AC' : '#00000050',
                 }}>
                 {label}
               </Animated.Text>
@@ -179,11 +179,11 @@ function MyTabs() {
       initialLayout={{
         width: Dimensions.get('window').width,
         // backgroundColor: theme?.card_bg || '#fff',
-        backgroundColor: 'powderblue',
+        backgroundColor: '#ffffff',
       }}>
       <Tab.Screen
         name="C2"
-        component={NotificationsScreen}
+        component={Options}
         options={{
           tabBarLabel: 'C2',
           // tabBarItemStyle: { width: 10 },
@@ -209,12 +209,12 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Approved"
-        component={NotificationsScreen}
+        component={Options}
         options={{tabBarLabel: 'Approved'}}
       />
       <Tab.Screen
         name="Pending"
-        component={ProfileScreen}
+        component={Options}
         options={{tabBarLabel: 'Pending'}}
       />
       <Tab.Screen

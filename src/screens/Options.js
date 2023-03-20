@@ -9,16 +9,28 @@ import {
   Modal,
   Dimensions,
   Pressable,
+  UIManager,
+  Platform,
+  LayoutAnimation,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Feather from 'react-native-vector-icons/Feather';
+import {NavigationContainer} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Hstack from '../component/Hstack';
 import ToggleSwitch from 'toggle-switch-react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
+
+if (
+  Platform.OS === 'android' &&
+  UIManager.setLayoutAnimationEnabledExperimental
+) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
 
 export const CustomHeader = ({
   searchFilterFunction,
@@ -49,13 +61,13 @@ export const CustomHeader = ({
         }}>
         <AntDesign
           name="search1"
-          size={25}
-          style={{ color: '#ef233c99', marginLeft: 8 }}
+          size={22}
+          style={{color: '#ef233c99', marginLeft: 8}}
         />
         <TextInput
           ref={searchRef}
           placeholder="search item here..."
-          style={{ width: '76%', height: 50 }}
+          style={{width: '76%', height: 50}}
           value={search}
           onChangeText={txt => {
             // searchFilterFunction(txt);
@@ -80,6 +92,37 @@ export const CustomHeader = ({
         )} */}
       </View>
     </View>
+  );
+};
+
+const Custombutton = props => {
+  const {title, color} = props;
+  return (
+    <TouchableOpacity
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 7,
+        backgroundColor: '#11111110',
+        paddingVertical: 5,
+        paddingHorizontal: 7,
+        flex: 1,
+        marginHorizontal: 5,
+      }}>
+      <Hstack centered>
+        {props.children}
+        <Text
+          style={{
+            fontSize: 12,
+            fontWeight: '800',
+            fontFamily: 'Roboto',
+            color,
+            marginLeft: 5,
+          }}>
+          {title}
+        </Text>
+      </Hstack>
+    </TouchableOpacity>
   );
 };
 
@@ -113,21 +156,32 @@ const Options = () => {
       setData(oldData);
     }
   };
+
+  const toggleOpen = () => {
+    setheight(height => !height);
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {/* <CustomHeader search={search} searchFilterFunction={searchFilterFunction} setSearch={setSearch} searchRef={searchRef} setVisible={setVisible}/> */}
-      <Hstack centered styles={{ marginTop: 10, marginRight: 20 }}>
-        <View style={{ flex: 1 }} />
+      <Hstack centered styles={{marginTop: 10, marginRight: 20}}>
+        <View style={{flex: 1}} />
         <ToggleSwitch
           isOn={buttons}
-          onColor="green"
-          offColor="red"
+          onColor="#3182CE"
+          offColor="#3182CE40"
           label="Show buttons"
-          labelStyle={{ color: 'black', fontWeight: '900' }}
+          labelStyle={{color: 'black', fontWeight: '900'}}
           size="medium"
-          onToggle={setbuttons}
+          onToggle={abc => {
+            setbuttons(!buttons);
+            // LayoutAnimation.configureNext(
+            //   LayoutAnimation.Presets.easeInEaseOut,
+            // );
+          }}
         />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={{
             // marginRight: 15,
             height: 40,
@@ -135,8 +189,9 @@ const Options = () => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 5,
-            backgroundColor: '#9bf3ee50',
+            borderColor: '#3182CE',
             marginLeft: 10,
+            borderWidth: 1,
           }}
           onPress={() => {
             setVisible(true);
@@ -144,50 +199,61 @@ const Options = () => {
           <MaterialCommunityIcons
             name="filter-outline"
             size={25}
-            style={{ color: '#7209b7', marginRight: 0 }}
+            style={{color: '#3182CE', marginRight: 0}}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </Hstack>
-
 
       <FlatList
         data={data}
         // stickyHeaderHiddenOnScroll
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => {
+        renderItem={({item, index}) => {
           return (
             <View
               style={{
                 width: Dimensions.get('window').width - 15,
                 marginHorizontal: 10,
-                borderRadius: 10,
-                borderWidth: 0.5,
+                borderRadius: 7,
+                // borderWidth: 0.5,
                 alignSelf: 'center',
                 marginTop: 10,
-                marginBottom: index === data.length - 1 ? 20 : 10,
+                marginBottom: index === data.length - 1 ? 10 : 5,
                 alignItems: 'center',
                 flexDirection: 'row',
+                // height: buttons ? 170 : 110,
+                backgroundColor: '#fff',
+                paddingVertical: 5,
               }}>
-              <Image
-                source={{ uri: item.image }}
-                style={{
-                  width: buttons ? 70 : 60,
-                  height: '90%',
-                  marginLeft: 10,
-                  borderRadius: 10,
-                }}
-              />
               <View>
-                <View style={{ flex: 1 }}>
+                <View
+                  style={
+                    {
+                      // flex: 1
+                    }
+                  }>
                   <Text
-                    style={{ fontWeight: '600', marginLeft: 10, marginTop: 10 }}>
+                    style={{
+                      fontWeight: '600',
+                      marginLeft: 10,
+                      marginTop: 10,
+                      fontSize: 20,
+                      color: '#111111',
+                      fontFamily: 'Inter-Medium',
+                    }}>
                     {item.title.substring(0, 30)}
                   </Text>
-                  <Text style={{ fontSize: 12, margin: 10 }}>
+                  <Text
+                    style={{
+                      margin: 10,
+                      fontSize: 15,
+                      color: '#333333',
+                      fontFamily: 'Inter-Regular',
+                    }}>
                     {item.description.substring(0, 50)}
                   </Text>
 
-                  <View
+                  {/* <View
                     style={{
                       flexDirection: 'row',
                       alignItems: 'center',
@@ -199,96 +265,53 @@ const Options = () => {
                         marginLeft: 10,
                         fontWeight: '800',
                         color: 'green',
+                        width: 100,
                       }}>
                       {'$ ' + item.price}
                     </Text>
-                    <Text
-                      style={{
-                        fontSize: 16,
-                        marginLeft: 50,
-                        fontWeight: '800',
-                        color: 'orange',
-                      }}>
-                      {item.rating.rate}
-                    </Text>
-                    <AntDesign
-                      name="star"
-                      size={25}
-                      style={{ color: '#ef233c99', marginLeft: 8 }}
-                    />
-                  </View>
+                  </View> */}
                 </View>
                 {buttons && (
                   <Hstack
                     centered
                     between
                     styles={{
-                      marginLeft: 10,
+                      // marginLeft: 10,
                       marginBottom: 10,
-                      flex: 1,
-                      // backgroundColor:'red',
-                      width: Dimensions.get('window').width - 120,
+                      // flex: 1,
+                      // backgroundColor: 'red',
+                      // marginRight: -20,
+                      width: Dimensions.get('window').width - 20,
+                      // flex: 1,
                     }}>
-                    <TouchableOpacity
-                      style={{
-                        height: 35,
-                        width: 35,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 5,
-                        backgroundColor: '#89cb12a0',
-                      }}>
-                      <MaterialCommunityIcons
-                        name="check-all"
-                        size={25}
-                        style={{ color: '#7209b7', marginRight: 0 }}
+                    <Custombutton title="Approve" color="#2b9348">
+                      <Feather
+                        name="check"
+                        size={19}
+                        style={{color: '#2b9348', marginTop: 2}}
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        height: 35,
-                        width: 35,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 5,
-                        backgroundColor: '#89cb12a0',
-                      }}>
-                      <MaterialCommunityIcons
-                        name="skull-crossbones-outline"
-                        size={25}
-                        style={{ color: '#7209b7', marginRight: 0 }}
+                    </Custombutton>
+                    <Custombutton title="Reject" color="#E53E3E">
+                      <Entypo
+                        name="cross"
+                        size={20}
+                        style={{color: '#E53E3E', marginRight: 0}}
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        height: 35,
-                        width: 35,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 5,
-                        backgroundColor: '#89cb12a0',
-                      }}>
+                    </Custombutton>
+                    <Custombutton title="Meet" color="#DD6B20">
                       <MaterialCommunityIcons
                         name="account-clock-outline"
-                        size={25}
-                        style={{ color: '#7209b7', marginRight: 0 }}
+                        size={19}
+                        style={{color: '#DD6B20', marginRight: 0}}
                       />
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={{
-                        height: 35,
-                        width: 35,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        borderRadius: 5,
-                        backgroundColor: '#89cb12a0',
-                      }}>
+                    </Custombutton>
+                    <Custombutton title="Fwd" color="#3182CE99">
                       <MaterialCommunityIcons
                         name="fast-forward"
-                        size={25}
-                        style={{ color: '#7209b7', marginRight: 0 }}
+                        size={22}
+                        style={{color: '#3182CE99', marginRight: 0}}
                       />
-                    </TouchableOpacity>
+                    </Custombutton>
                   </Hstack>
                 )}
               </View>
@@ -296,34 +319,35 @@ const Options = () => {
           );
         }}
       />
-      <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+      <View style={{position: 'absolute', bottom: 20, right: 20}}>
         <TouchableOpacity
           onPress={() => navigation.navigate('CreateNotesheet')}
           style={{
-            height: 40,
-            width: 40,
+            height: 55,
+            width: 55,
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 40,
-            backgroundColor: '#89cb12a0',
+            backgroundColor: '#3182CE80',
             zIndex: 1,
             alignSelf: 'flex-end',
           }}>
           <MaterialCommunityIcons
             name="plus"
-            size={30}
-            style={{ color: '#7209b7', marginRight: 0 }}
+            size={40}
+            style={{color: '#f4e285', marginRight: 0}}
           />
         </TouchableOpacity>
       </View>
-      <Modal
+      {/* <Modal
         animationType="slide"
         transparent={true}
         visible={visible}
         onRequestClose={() => {
           setVisible(!visible);
         }}>
-        <Pressable style={{ flex: 1 }}
+        <Pressable
+          style={{flex: 1}}
           onPress={() => {
             setVisible(!visible);
           }}>
@@ -357,7 +381,7 @@ const Options = () => {
                   setData(strAscending);
                   setVisible(false);
                 }}>
-                <Text style={{ fontSize: 18, color: '#000' }}> Sort By Name</Text>
+                <Text style={{fontSize: 18, color: '#000'}}> Sort By Name</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={{
@@ -372,7 +396,7 @@ const Options = () => {
                   setData(data.sort((a, b) => a.price - b.price));
                   setVisible(false);
                 }}>
-                <Text style={{ fontSize: 18, color: '#000' }}>
+                <Text style={{fontSize: 18, color: '#000'}}>
                   Low to High Price
                 </Text>
               </TouchableOpacity>
@@ -389,7 +413,7 @@ const Options = () => {
                   setData(data.sort((a, b) => b.price - a.price));
                   setVisible(false);
                 }}>
-                <Text style={{ fontSize: 18, color: '#000' }}>
+                <Text style={{fontSize: 18, color: '#000'}}>
                   Hight to Low Price
                 </Text>
               </TouchableOpacity>
@@ -406,12 +430,15 @@ const Options = () => {
                   setData(data.sort((a, b) => b.rating.rate - a.rating.rate));
                   setVisible(false);
                 }}>
-                <Text style={{ fontSize: 18, color: '#000' }}> Sort By Rating</Text>
+                <Text style={{fontSize: 18, color: '#000'}}>
+                  {' '}
+                  Sort By Rating
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
         </Pressable>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
