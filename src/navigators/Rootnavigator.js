@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect, useRef, useState} from 'react';
-import {NavigationContainer} from '@react-navigation/native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import React, { useEffect, useRef, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
   StyleSheet,
   Text,
@@ -15,12 +15,12 @@ import {
   Dimensions,
   Animated,
 } from 'react-native';
-import {Options} from '../screens';
+import { Options } from '../screens';
 import Hstack from '../component/Hstack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const windowWidth = Dimensions.get('window').width;
-function MyTabBar({state, descriptors, navigation}) {
+function MyTabBar({ state, descriptors, navigation }) {
   // }));
   const [search, setSearch] = useState('');
 
@@ -45,12 +45,12 @@ function MyTabBar({state, descriptors, navigation}) {
           <AntDesign
             name="search1"
             size={22}
-            style={{color: '#00000099', marginLeft: 0}}
+            style={{ color: '#00000099', marginLeft: 0 }}
           />
           <TextInput
             // ref={searchRef}
             placeholder="Search notesheet here..."
-            style={{flex: 1, marginLeft: 4, fontSize: 14}}
+            style={{ flex: 1, marginLeft: 4, fontSize: 14 }}
             value={search}
             onChangeText={txt => {
               // searchFilterFunction(txt);
@@ -78,13 +78,13 @@ function MyTabBar({state, descriptors, navigation}) {
           borderBottomWidth: 1,
         }}>
         {state.routes.map((route, index) => {
-          const {options} = descriptors[route.key];
+          const { options } = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-              ? options.title
-              : route.name;
+                ? options.title
+                : route.name;
           const isFocused = state.index === index;
 
           const onPress = () => {
@@ -95,7 +95,7 @@ function MyTabBar({state, descriptors, navigation}) {
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({name: route.name, merge: true});
+              navigation.navigate({ name: route.name, merge: true });
             }
           };
 
@@ -110,7 +110,7 @@ function MyTabBar({state, descriptors, navigation}) {
             <TouchableOpacity
               key={route.name}
               accessibilityRole="button"
-              accessibilityState={isFocused ? {selected: true} : {}}
+              accessibilityState={isFocused ? { selected: true } : {}}
               onPress={onPress}
               onLongPress={onLongPress}
               style={{
@@ -141,7 +141,7 @@ function MyTabBar({state, descriptors, navigation}) {
 
 function FeedScreen() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Feed!</Text>
     </View>
   );
@@ -149,7 +149,7 @@ function FeedScreen() {
 
 function NotificationsScreen() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Notifications!</Text>
     </View>
   );
@@ -157,7 +157,7 @@ function NotificationsScreen() {
 
 function ProfileScreen() {
   return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Profile!</Text>
     </View>
   );
@@ -175,7 +175,7 @@ function MyTabs() {
         activeTintColor: '#080808',
       }}
       tabBar={props => <MyTabBar theme {...props} />}
-      sceneContainerStyle={{backgroundColor: '#bceaba20'}}
+      sceneContainerStyle={{ backgroundColor: '#bceaba20' }}
       initialLayout={{
         width: Dimensions.get('window').width,
         // backgroundColor: theme?.card_bg || '#fff',
@@ -183,12 +183,13 @@ function MyTabs() {
       }}>
       <Tab.Screen
         name="C2"
-        component={Options}
+        // component={Options}
+        children={() => <Options showbuttons/>}
         options={{
           tabBarLabel: 'C2',
           // tabBarItemStyle: { width: 10 },
-          tabBarItemStyle: {minWidht: '10', backgroundColor: 'red'},
-          tabBarContentContainerStyle: {minWidht: '10', backgroundColor: 'red'},
+          tabBarItemStyle: { minWidht: '10', backgroundColor: 'red' },
+          tabBarContentContainerStyle: { minWidht: '10', backgroundColor: 'red' },
         }}
       />
       <Tab.Screen
@@ -210,17 +211,17 @@ function MyTabs() {
       <Tab.Screen
         name="Approved"
         component={Options}
-        options={{tabBarLabel: 'Approved'}}
+        options={{ tabBarLabel: 'Approved' }}
       />
       <Tab.Screen
         name="Pending"
         component={Options}
-        options={{tabBarLabel: 'Pending'}}
+        options={{ tabBarLabel: 'Pending' }}
       />
       <Tab.Screen
         name="Others"
         component={ProfileScreen}
-        options={{tabBarLabel: 'Others'}}
+        options={{ tabBarLabel: 'Others' }}
       />
     </Tab.Navigator>
   );
