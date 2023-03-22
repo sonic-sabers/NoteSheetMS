@@ -13,6 +13,7 @@ import {
   Platform,
   LayoutAnimation,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -23,8 +24,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Hstack from '../component/Hstack';
 import ToggleSwitch from 'toggle-switch-react-native';
-
+import α from 'color-alpha';
 import { useNavigation } from '@react-navigation/native';
+import { colors } from '../constants';
 
 if (
   Platform.OS === 'android' &&
@@ -67,9 +69,10 @@ export const CustomHeader = ({
         />
         <TextInput
           ref={searchRef}
-          placeholder="search item here..."
+          placeholder="Search Notesheet here..."
           style={{ width: '76%', height: 50 }}
           value={search}
+          placeholderTextColor="#00000050" 
           onChangeText={txt => {
             // searchFilterFunction(txt);
             // setSearch(txt);
@@ -96,20 +99,32 @@ export const CustomHeader = ({
   );
 };
 
-const Custombutton = props => {
-  const { title, color } = props;
+export const Custombutton = props => {
+  const { title, color, end, onPress } = props;
   return (
     <TouchableOpacity
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-        borderRadius: 7,
-        backgroundColor: '#11111108',
-        paddingVertical: 5,
-        paddingHorizontal: 7,
-        flex: 1,
-        marginHorizontal: 8,
-      }}>
+      onPress={onPress}
+      style={[
+        {
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: 7,
+          backgroundColor: '#fafafa',
+          paddingVertical: 5,
+          paddingHorizontal: 7,
+          flex: 1,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity: 0.2,
+          shadowRadius: 1.41,
+
+          elevation: 2,
+        },
+        !end && { marginHorizontal: 8 },
+      ]}>
       {/* <Hstack centered> */}
       {props.children}
       <Text
@@ -128,6 +143,155 @@ const Custombutton = props => {
   );
 };
 
+const TaskView = ({ buttons, item, data, index }) => {
+  const navigation = useNavigation();
+  return (
+    <Pressable
+      onPress={() => navigation.navigate('Detailednote')}
+      style={{
+        width: Dimensions.get('window').width - 25,
+        marginHorizontal: 10,
+        borderRadius: 7,
+        // borderWidth: 0.5,
+        alignSelf: 'center',
+        marginTop: 10,
+        marginBottom: index === data.length - 1 ? 10 : 5,
+        alignItems: 'center',
+        flexDirection: 'row',
+        // height: buttons ? 170 : 110,
+        backgroundColor: '#ffffff',
+        paddingVertical: 5,
+        paddingBottom: 10,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+        elevation: 4,
+      }}>
+      <View>
+        <View>
+          <Text
+            style={{
+              fontWeight: '600',
+              marginLeft: 10,
+              marginTop: 5,
+              fontSize: 20,
+              color: '#111111',
+              fontFamily: 'Inter-Medium',
+            }}>
+            {item.title.substring(0, 30)}
+          </Text>
+          <Text
+            style={{
+              marginLeft: 10,
+              fontSize: 15,
+              color: '#333333',
+              fontFamily: 'Inter-Regular',
+              fontStyle: 'normal',
+            }}>
+            Date :- 24-04-2023
+          </Text>
+          <Text
+            style={{
+              margin: 10,
+              fontSize: 15,
+              color: '#333333',
+              fontFamily: 'Inter-Regular',
+            }}>
+            {item.description.substring(0, 150)}
+          </Text>
+          <Text
+            style={{
+              marginLeft: 10,
+              fontSize: 15,
+              color: '#33333390',
+              fontFamily: 'Inter-Regular',
+              fontStyle: 'italic',
+            }}>
+            Assignor : {item.description.substring(0, 10)}
+          </Text>
+        </View>
+        {buttons && (
+          <Hstack
+            centered
+            between
+            styles={{
+              // marginLeft: 10,
+              marginBottom: 10,
+              // flex: 1,
+              // backgroundColor: 'red',
+              marginTop: 10,
+              width: Dimensions.get('window').width - 25,
+              // flex: 1,
+            }}>
+            <Custombutton
+              title="Approve"
+              color="#111"
+              // onPress={() => alert('Note sheet is approved')}>
+              onPress={() =>
+                Alert.alert('', 'Note sheet is approved', [
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ])
+              }>
+              <Feather
+                name="check"
+                size={24}
+                style={{ color: '#2b9348', marginTop: 2 }}
+              />
+            </Custombutton>
+            <Custombutton
+              title="Reject"
+              color="#111"
+              onPress={() =>
+                Alert.alert('', 'Note sheet is Rejected', [
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ])
+              }>
+              <Entypo
+                name="cross"
+                size={24}
+                style={{ color: '#E53E3E', marginRight: 0 }}
+              />
+            </Custombutton>
+            <Custombutton
+              title="Meet"
+              color="#111"
+              onPress={() =>
+                Alert.alert('', 'Notified converners to met in person', [
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ])
+              }>
+              <MaterialCommunityIcons
+                name="account-clock-outline"
+                size={24}
+                style={{ color: '#DD6B20', marginRight: 0 }}
+              />
+            </Custombutton>
+            <Custombutton
+              title="Fwd"
+              color="#111"
+              // onPress={() => (alert('To select to forward'))}>
+              onPress={() =>
+                Alert.alert('', 'To select to forward', [
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ])
+              }>
+              <MaterialCommunityIcons
+                name="fast-forward"
+                size={24}
+                style={{ color: '#3182CE99', marginRight: 0 }}
+              />
+            </Custombutton>
+          </Hstack>
+        )}
+      </View>
+    </Pressable>
+  );
+};
+
 const Options = ({ showbuttons }) => {
   const [visible, setVisible] = useState(false);
   const [buttons, setbuttons] = useState(false);
@@ -138,8 +302,8 @@ const Options = ({ showbuttons }) => {
   const [oldData, setOldData] = useState([]);
   const [Loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  console.log('12');
 
+  const tempdata = {};
   const fetchdata = async () => {
     const res = await fetch(`https://dummyjson.com/products/?limit=${limit}`);
     setLoading(false);
@@ -151,6 +315,7 @@ const Options = ({ showbuttons }) => {
   };
 
   useEffect(() => {
+    setLoading(true);
     fetchdata();
   }, []);
 
@@ -162,21 +327,22 @@ const Options = ({ showbuttons }) => {
   return (
     <View style={{ flex: 1 }}>
       {/* <CustomHeader search={search} searchFilterFunction={searchFilterFunction} setSearch={setSearch} searchRef={searchRef} setVisible={setVisible}/> */}
-      {showbuttons ? <Hstack centered styles={{ marginTop: 10, marginRight: 20 }}>
-        <View style={{ flex: 1 }} />
-        <ToggleSwitch
-          isOn={buttons}
-          onColor="#3182CE"
-          offColor="#3182CE40"
-          label="Show buttons"
-          labelStyle={{ color: 'black', fontWeight: '900' }}
-          size="medium"
-          onToggle={abc => {
-            setbuttons(!buttons);
-          }}
-        />
+      {showbuttons ? (
+        <Hstack centered styles={{ padding: 10, backgroundColor: '#3182CE10' }}>
+          <View style={{ flex: 1 }} />
+          <ToggleSwitch
+            isOn={buttons}
+            onColor="#3182CE"
+            offColor={α(colors.primary, 0.2)}
+            label="Show buttons"
+            labelStyle={{ color: 'black', fontWeight: '900' }}
+            size="medium"
+            onToggle={abc => {
+              setbuttons(!buttons);
+            }}
+          />
 
-        {/* <TouchableOpacity
+          {/* <TouchableOpacity
           style={{
             // marginRight: 15,
             height: 40,
@@ -197,112 +363,15 @@ const Options = ({ showbuttons }) => {
             style={{color: '#3182CE', marginRight: 0}}
           />
         </TouchableOpacity> */}
-      </Hstack> : null}
-
+        </Hstack>
+      ) : null}
       <FlatList
         data={data}
         // stickyHeaderHiddenOnScroll
         showsVerticalScrollIndicator={false}
         renderItem={({ item, index }) => {
           return (
-            <View
-              style={{
-                width: Dimensions.get('window').width - 15,
-                marginHorizontal: 10,
-                borderRadius: 7,
-                // borderWidth: 0.5,
-                alignSelf: 'center',
-                marginTop: 10,
-                marginBottom: index === data.length - 1 ? 10 : 5,
-                alignItems: 'center',
-                flexDirection: 'row',
-                // height: buttons ? 170 : 110,
-                backgroundColor: '#fff',
-                paddingVertical: 5,
-              }}>
-              <View>
-                <View
-                  style={
-                    {
-                      // flex: 1
-                    }
-                  }>
-                  <Text
-                    style={{
-                      fontWeight: '600',
-                      marginLeft: 10,
-                      marginTop: 10,
-                      fontSize: 20,
-                      color: '#111111',
-                      fontFamily: 'Inter-Medium',
-                    }}>
-                    {item.title.substring(0, 30)}
-                  </Text>
-                  <Text
-                    style={{
-                      margin: 10,
-                      fontSize: 15,
-                      color: '#333333',
-                      fontFamily: 'Inter-Regular',
-                    }}>
-                    {item.description.substring(0, 50)}
-                  </Text>
-                  <Text
-                    style={{
-                      marginLeft: 10,
-                      fontSize: 15,
-                      color: '#333333',
-                      fontFamily: 'Inter-Regular',
-                      fontStyle: 'italic',
-                    }}>
-                    Assignor :- {item.description.substring(0, 10)}
-                  </Text>
-                </View>
-                {buttons && (
-                  <Hstack
-                    centered
-                    between
-                    styles={{
-                      // marginLeft: 10,
-                      marginBottom: 10,
-                      // flex: 1,
-                      // backgroundColor: 'red',
-                      marginTop: 10,
-                      width: Dimensions.get('window').width - 20,
-                      // flex: 1,
-                    }}>
-                    <Custombutton title="Approve" color="#111">
-                      <Feather
-                        name="check"
-                        size={24}
-                        style={{ color: '#2b9348', marginTop: 2 }}
-                      />
-                    </Custombutton>
-                    <Custombutton title="Reject" color="#111">
-                      <Entypo
-                        name="cross"
-                        size={24}
-                        style={{ color: '#E53E3E', marginRight: 0 }}
-                      />
-                    </Custombutton>
-                    <Custombutton title="Meet" color="#111">
-                      <MaterialCommunityIcons
-                        name="account-clock-outline"
-                        size={24}
-                        style={{ color: '#DD6B20', marginRight: 0 }}
-                      />
-                    </Custombutton>
-                    <Custombutton title="Fwd" color="#111">
-                      <MaterialCommunityIcons
-                        name="fast-forward"
-                        size={24}
-                        style={{ color: '#3182CE99', marginRight: 0 }}
-                      />
-                    </Custombutton>
-                  </Hstack>
-                )}
-              </View>
-            </View>
+            <TaskView item={item} index={index} data={data} buttons={buttons} />
           );
         }}
         onRefresh={onRefresh}
@@ -312,16 +381,41 @@ const Options = ({ showbuttons }) => {
         onEndReachedThreshold={0.5}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
+        style={{ flex: 1, backgroundColor: '#3182CE10' }}
+        // style={{ flex: 1, backgroundColor: α(colors.primary, 0.1) }}
+        contentContainerStyle={[{}]}
         ListEmptyComponent={
-          <View
-            style={{
-              height: 100,
-              justifyContent: 'center',
-              alignItems: 'center',
-              minHeight: 100,
-              marginBottom: 30,
-            }}>
-            <ActivityIndicator animating color="#3182CE99" size={35} />
+          <View style={{ flex: 1 }}>
+            {Loading ? (
+              <View
+                style={{
+                  height: 100,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  minHeight: 100,
+                  marginBottom: 30,
+                  marginTop: -7,
+                }}>
+                <ActivityIndicator animating color="#3182CE99" size={35} />
+              </View>
+            ) : (
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: 20,
+                }}>
+                <Text
+                  style={{
+                    fontSize: 20,
+                    fontWeight: '400',
+                    color: '#000',
+                  }}>
+                  No data to Show
+                </Text>
+              </View>
+            )}
           </View>
         }
       />
@@ -334,7 +428,7 @@ const Options = ({ showbuttons }) => {
             justifyContent: 'center',
             alignItems: 'center',
             borderRadius: 40,
-            backgroundColor: '#3182CE99',
+            backgroundColor: α(colors.primary, 1),
             zIndex: 1,
             alignSelf: 'flex-end',
           }}>

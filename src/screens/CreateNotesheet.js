@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import React, { Component, useState, useEffect, useRef } from 'react';
 import {
   StyleSheet,
@@ -21,6 +22,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Dropdown } from 'react-native-element-dropdown';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CheckBox from 'react-native-check-box';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { colors } from '../constants';
+import α from 'color-alpha';
 
 const SchoolData = [
   { label: 'CSE', value: '1' },
@@ -64,12 +68,15 @@ const CustomDropdown = props => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
+        itemTextStyle={{ color: '#00000080' }}
         iconStyle={styles.iconStyle}
+        activeColor={colors.primary}
         data={dropdownData}
         search
         maxHeight={300}
         labelField="label"
         valueField="value"
+        placeholderTextColor="#00000050" 
         placeholder={!isFocus ? placeholderText : '...'}
         searchPlaceholder="Search..."
         value={value}
@@ -106,11 +113,12 @@ const CustomTextInput = ({ title, onChangeText, text, placeholdervalue }) => {
           borderColor: '#33333360',
           padding: 5,
           height: 50,
-          fontSize: 15,
           paddingLeft: 15,
+          fontSize: 15,
           color: '#666666',
           marginTop: 5,
         }}
+        placeholderTextColor="#00000050"
         placeholder={placeholdervalue}
         // placeholder="Enter Subject of Notesheet"
         onChangeText={onChangeText()}
@@ -140,7 +148,7 @@ const CustomCheckboxHolder = ({ setValues, Values, title }) => {
         {title ? title : 'Subject'}
       </Text>
       <CheckBox
-        checkedCheckBoxColor="#3182CE"
+        checkedCheckBoxColor={α(colors.primary, 0.4)}
         style={{ alignItems: 'center', marginTop: 10 }}
         onClick={() => {
           setValues(!Values);
@@ -149,7 +157,19 @@ const CustomCheckboxHolder = ({ setValues, Values, title }) => {
       />
     </View>
   );
+
 };
+
+const date = new Date();
+
+let day = date.getDate();
+let month = date.getMonth() + 1;
+let year = date.getFullYear();
+
+// This arrangement can be altered based on how we want the date's format to appear.
+// let CurrentDate = `${day}-${month}-${year}`;
+let CurrentDate = `${year}-${month}-${day}`;
+console.log(CurrentDate);
 
 export default function CreateNotesheet() {
   const [Subject, setSubject] = useState(null);
@@ -167,10 +187,48 @@ export default function CreateNotesheet() {
   const [isFocusSchool, setIsFocusSchool] = useState(false);
   const [valueDept, setValueDept] = useState(null);
   const [isFocusDept, setIsFocusDept] = useState(false);
-  const [text, onChangeText] = React.useState('');
+  const [DateValue, onChangeDateValue] = React.useState('');
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const FormatDate = data => {
+    let dateTimeString =
+      data.getDate() + '-' + (data.getMonth() + 1) + '-' + data.getFullYear();
+    // ' ' +
+    // data.getHours() +
+    // ':' +
+    // data.getMinutes();
+
+    return dateTimeString; // It will look something like this 3-5-2021 16:23
+  };
+  const handleConfirm = date => {
+    onChangeDateValue(FormatDate(date));
+    hideDatePicker();
+  };
+  const dateTimePicker = (
+    <DateTimePickerModal
+      isVisible={isDatePickerVisible}
+      mode="date"
+      onConfirm={handleConfirm}
+      onCancel={hideDatePicker}
+      date={DateValue ? new Date(DateValue) : undefined}
+      minimumDate={new Date()}
+    // maximumDate={addDays(new Date(), 5)}
+    />
+  );
+
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
+      {dateTimePicker}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{}}
@@ -195,7 +253,42 @@ export default function CreateNotesheet() {
           dropdownData={DepartmentData}
           value={valueDept}
         />
-
+        <View style={{ marginBottom: 5 }}>
+          <Text
+            style={{
+              fontSize: 15,
+              fontWeight: '700',
+              color: '#000',
+              marginTop: 5,
+            }}>
+            Select Date
+          </Text>
+          <TouchableOpacity
+            onPress={() => showDatePicker()}
+            style={{
+              borderWidth: 1,
+              borderRadius: 7,
+              borderColor: '#33333360',
+              padding: 5,
+              height: 50,
+              fontSize: 15,
+              paddingLeft: 15,
+              color: '#666666',
+              marginTop: 5,
+              justifyContent: 'center',
+            }}>
+            <Text
+              style={{
+                fontWeight: '400',
+                fontFamily: 'Roboto',
+                fontSize: 15,
+                // paddingLeft: 15,
+                color: '#66666699',
+              }}>
+              {DateValue === '' ? 'Date' : DateValue}
+            </Text>
+          </TouchableOpacity>
+        </View>
         <CustomTextInput
           title="Subject"
           onChangeText={setSubject}
@@ -255,29 +348,29 @@ export default function CreateNotesheet() {
         <View>
           <TouchableOpacity
             onPress={() => (
-              Alert.alert('Note Sheet is created'),
-              navigation.goBack()
+              Alert.alert('Note Sheet is created'), navigation.goBack()
             )}
             style={{
               padding: 10,
-              backgroundColor: '#3182CE',
+              backgroundColor: '#ca4b0b',
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 10,
               marginTop: 15,
+              opacity: 0.9,
             }}>
             <Text
               style={{
                 fontSize: 17,
                 fontWeight: '500',
                 color: '#fff',
+                zIndex: 400,
               }}>
               Create
             </Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.goBack()
-            }
+            onPress={() => navigation.goBack()}
             style={{
               padding: 10,
               backgroundColor: '#fff',
@@ -286,7 +379,7 @@ export default function CreateNotesheet() {
               borderRadius: 10,
               marginVertical: 15,
               borderWidth: 1,
-              borderColor: '#999'
+              borderColor: '#999',
             }}>
             <Text
               style={{

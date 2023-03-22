@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,16 +12,15 @@ import {
   ActivityIndicator,
   Keyboard,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { colors } from '../constants';
+import {useNavigation} from '@react-navigation/native';
+import {colors} from '../constants';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import Octicons from 'react-native-vector-icons/Octicons';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Hstack from '../component/Hstack';
 import fetchService from '../services/fetchService';
-import { Formik } from 'formik';
+import {Formik} from 'formik';
 import * as Yup from 'yup';
 import Hstack from '../component/Hstack';
 
@@ -29,7 +28,6 @@ const Styledtextinput = props => {
   const [text, onChangeText] = React.useState('');
   // https://godconnect.online/api/UserMgmtAPI/ProfileCheck
   const [hidePass, setHidePass] = React.useState(true);
-  const navigation = useNavigation();
 
   return (
     <View>
@@ -109,7 +107,6 @@ export default function Loginscreen() {
     PWord: '',
   };
 
-  const regex = /^(?:\d{8}|\w+@\w+\.\w{2,3})$/;
   const validationSchema = Yup.object({
     EmailId: Yup.string()
       .trim()
@@ -143,7 +140,7 @@ export default function Loginscreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
+    <KeyboardAvoidingView style={{flex: 1}}>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{
@@ -159,17 +156,7 @@ export default function Loginscreen() {
               paddingBottom: 10,
             }}>
             <View>
-              {/* <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate('Onboardingscreen', {
-                    status: 'back',
-                  })}
-                style={styles.backbutton}>
-                <Octicons name='arrow-left'
-                  size={27} color={colors.secondary} />
-              </TouchableOpacity> */}
-              <Text style={styles.hitext}>Hi There!</Text>
-
+              <Text style={styles.hitext}>Hi</Text>
               <Text style={styles.logintext}>Log In Here</Text>
             </View>
             <View
@@ -197,7 +184,7 @@ export default function Loginscreen() {
                 }) => {
                   {
                   }
-                  const { EmailId, PWord } = values;
+                  const {EmailId, PWord} = values;
                   return (
                     <>
                       <Styledtextinput

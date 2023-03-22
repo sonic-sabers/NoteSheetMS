@@ -1,16 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useEffect, useRef, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { useState } from 'react';
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import {
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ActivityIndicator,
-  Alert,
-  Pressable,
-  Modal,
   TextInput,
   Dimensions,
   Animated,
@@ -18,6 +12,7 @@ import {
 import { Options } from '../screens';
 import Hstack from '../component/Hstack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import { colors } from '../constants';
 
 const windowWidth = Dimensions.get('window').width;
 function MyTabBar({ state, descriptors, navigation }) {
@@ -50,7 +45,8 @@ function MyTabBar({ state, descriptors, navigation }) {
           <TextInput
             // ref={searchRef}
             placeholder="Search notesheet here..."
-            style={{ flex: 1, marginLeft: 4, fontSize: 14 }}
+            style={{ flex: 1, marginLeft: 4, fontSize: 14, color: '#00000050' }}
+            placeholderTextColor="#00000050"
             value={search}
             onChangeText={txt => {
               // searchFilterFunction(txt);
@@ -117,7 +113,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                 flex: 1,
                 justifyContent: 'center',
                 alignItems: 'center',
-                borderBottomColor: isFocused ? '#2A69AC' : 'transparent',
+                borderBottomColor: isFocused ? colors.primary : 'transparent',
                 borderBottomWidth: 1,
                 marginBottom: -1,
               }}>
@@ -127,7 +123,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                   width: windowWidth / 3,
                   textAlign: 'center',
                   // ...subTextThic,
-                  color: isFocused ? '#2A69AC' : '#00000050',
+                  color: isFocused ? colors.primary : '#00000050',
                 }}>
                 {label}
               </Animated.Text>
@@ -155,10 +151,17 @@ function NotificationsScreen() {
   );
 }
 
-function ProfileScreen() {
+function OthersScreen() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Profile!</Text>
+      <Text
+        style={{
+          fontSize: 20,
+          fontWeight: '400',
+          color: '#00000060'
+        }}>
+        Other Notesheets
+      </Text>
     </View>
   );
 }
@@ -173,6 +176,8 @@ function MyTabs() {
         lazy: true,
         showIcon: false,
         activeTintColor: '#080808',
+        animationEnabled: true,
+        swipeEnabled: true,
       }}
       tabBar={props => <MyTabBar theme {...props} />}
       sceneContainerStyle={{ backgroundColor: '#bceaba20' }}
@@ -184,7 +189,7 @@ function MyTabs() {
       <Tab.Screen
         name="C2"
         // component={Options}
-        children={() => <Options showbuttons/>}
+        children={() => <Options showbuttons />}
         options={{
           tabBarLabel: 'C2',
           // tabBarItemStyle: { width: 10 },
@@ -199,11 +204,9 @@ function MyTabs() {
           tabBarLabel: 'All',
           tabBarBounces: true,
           tabBarItemStyle: {
-            backgroundColor: 'red',
             flex: 1,
           },
           tabBarStyle: {
-            backgroundColor: 'red',
             flex: 1,
           },
         }}
@@ -220,7 +223,7 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Others"
-        component={ProfileScreen}
+        component={OthersScreen}
         options={{ tabBarLabel: 'Others' }}
       />
     </Tab.Navigator>
