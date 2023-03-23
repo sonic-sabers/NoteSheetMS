@@ -5,7 +5,7 @@ import {Rootnavigator, Appnavigator} from './src/navigators';
 import {Loginscreen} from './src/screens';
 import {SafeAreaView, StatusBar} from 'react-native';
 import α from 'color-alpha';
-import { colors } from './src/constants';
+import {colors} from './src/constants';
 
 const Stack = createStackNavigator();
 

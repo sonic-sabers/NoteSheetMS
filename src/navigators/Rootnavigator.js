@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import React, {useState} from 'react';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {
   Text,
   TouchableOpacity,
@@ -9,13 +9,13 @@ import {
   Dimensions,
   Animated,
 } from 'react-native';
-import { Options } from '../screens';
+import {Options} from '../screens';
 import Hstack from '../component/Hstack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import { colors } from '../constants';
+import {colors} from '../constants';
 
 const windowWidth = Dimensions.get('window').width;
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({state, descriptors, navigation}) {
   // }));
   const [search, setSearch] = useState('');
 
@@ -40,12 +40,12 @@ function MyTabBar({ state, descriptors, navigation }) {
           <AntDesign
             name="search1"
             size={22}
-            style={{ color: '#00000099', marginLeft: 0 }}
+            style={{color: '#00000099', marginLeft: 0}}
           />
           <TextInput
             // ref={searchRef}
             placeholder="Search notesheet here..."
-            style={{ flex: 1, marginLeft: 4, fontSize: 14, color: '#00000050' }}
+            style={{flex: 1, marginLeft: 4, fontSize: 14, color: '#00000050'}}
             placeholderTextColor="#00000050"
             value={search}
             onChangeText={txt => {
@@ -74,13 +74,13 @@ function MyTabBar({ state, descriptors, navigation }) {
           borderBottomWidth: 1,
         }}>
         {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
+          const {options} = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-                ? options.title
-                : route.name;
+              ? options.title
+              : route.name;
           const isFocused = state.index === index;
 
           const onPress = () => {
@@ -91,7 +91,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             });
 
             if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({ name: route.name, merge: true });
+              navigation.navigate({name: route.name, merge: true});
             }
           };
 
@@ -106,7 +106,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             <TouchableOpacity
               key={route.name}
               accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityState={isFocused ? {selected: true} : {}}
               onPress={onPress}
               onLongPress={onLongPress}
               style={{
@@ -135,30 +135,14 @@ function MyTabBar({ state, descriptors, navigation }) {
   );
 }
 
-function FeedScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Feed!</Text>
-    </View>
-  );
-}
-
-function NotificationsScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Notifications!</Text>
-    </View>
-  );
-}
-
 function OthersScreen() {
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text
         style={{
           fontSize: 20,
           fontWeight: '400',
-          color: '#00000060'
+          color: '#00000060',
         }}>
         Other Notesheets
       </Text>
@@ -180,7 +164,7 @@ function MyTabs() {
         swipeEnabled: true,
       }}
       tabBar={props => <MyTabBar theme {...props} />}
-      sceneContainerStyle={{ backgroundColor: '#bceaba20' }}
+      sceneContainerStyle={{backgroundColor: '#bceaba20'}}
       initialLayout={{
         width: Dimensions.get('window').width,
         // backgroundColor: theme?.card_bg || '#fff',
@@ -193,8 +177,8 @@ function MyTabs() {
         options={{
           tabBarLabel: 'C2',
           // tabBarItemStyle: { width: 10 },
-          tabBarItemStyle: { minWidht: '10', backgroundColor: 'red' },
-          tabBarContentContainerStyle: { minWidht: '10', backgroundColor: 'red' },
+          tabBarItemStyle: {minWidht: '10', backgroundColor: 'red'},
+          tabBarContentContainerStyle: {minWidht: '10', backgroundColor: 'red'},
         }}
       />
       <Tab.Screen
@@ -213,18 +197,20 @@ function MyTabs() {
       />
       <Tab.Screen
         name="Approved"
-        component={Options}
-        options={{ tabBarLabel: 'Approved' }}
+        // component={Options}
+        children={() => <Options Approved />}
+        options={{tabBarLabel: 'Approved'}}
       />
       <Tab.Screen
         name="Pending"
-        component={Options}
-        options={{ tabBarLabel: 'Pending' }}
+        // component={Options}
+        children={() => <Options  />}
+        options={{tabBarLabel: 'Pending'}}
       />
       <Tab.Screen
         name="Others"
         component={OthersScreen}
-        options={{ tabBarLabel: 'Others' }}
+        options={{tabBarLabel: 'Others'}}
       />
     </Tab.Navigator>
   );

@@ -6499,6 +6499,11 @@
     "jscodeshift" "^0.13.1"
     "nullthrows" "^1.1.1"
 
+"react-native-dropdown-picker@^5.4.6":
+  "integrity" "sha512-T1XBHbE++M6aRU3wFYw3MvcOuabhWZ29RK/Ivdls2r1ZkZ62iEBZknLUPeVLMX3x6iUxj4Zgr3X2DGlEGXeHsA=="
+  "resolved" "https://registry.npmjs.org/react-native-dropdown-picker/-/react-native-dropdown-picker-5.4.6.tgz"
+  "version" "5.4.6"
+
 "react-native-element-dropdown@^2.8.2":
   "integrity" "sha512-uh7A3NlUT4s6962LN4Dj83EgHUGap8hfER70sIElCiH6fSuRlV0dHstNS+xNuhLCabiqpcK6kOIY7oxJLQMqvQ=="
   "resolved" "https://registry.npmjs.org/react-native-element-dropdown/-/react-native-element-dropdown-2.8.2.tgz"

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
 import {
   View,
@@ -15,18 +16,19 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import {NavigationContainer} from '@react-navigation/native';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import Hstack from '../component/Hstack';
 import ToggleSwitch from 'toggle-switch-react-native';
 import α from 'color-alpha';
-import { useNavigation } from '@react-navigation/native';
-import { colors } from '../constants';
+import {useNavigation} from '@react-navigation/native';
+import {colors} from '../constants';
+import {Itemsdata} from '../database/Database';
 
 if (
   Platform.OS === 'android' &&
@@ -65,14 +67,14 @@ export const CustomHeader = ({
         <AntDesign
           name="search1"
           size={22}
-          style={{ color: '#ef233c99', marginLeft: 8 }}
+          style={{color: '#ef233c99', marginLeft: 8}}
         />
         <TextInput
           ref={searchRef}
           placeholder="Search Notesheet here..."
-          style={{ width: '76%', height: 50 }}
+          style={{width: '76%', height: 50}}
           value={search}
-          placeholderTextColor="#00000050" 
+          placeholderTextColor="#00000050"
           onChangeText={txt => {
             // searchFilterFunction(txt);
             // setSearch(txt);
@@ -100,7 +102,7 @@ export const CustomHeader = ({
 };
 
 export const Custombutton = props => {
-  const { title, color, end, onPress } = props;
+  const {title, color, end, onPress} = props;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -123,7 +125,7 @@ export const Custombutton = props => {
 
           elevation: 2,
         },
-        !end && { marginHorizontal: 8 },
+        !end && {marginHorizontal: 8},
       ]}>
       {/* <Hstack centered> */}
       {props.children}
@@ -143,11 +145,14 @@ export const Custombutton = props => {
   );
 };
 
-const TaskView = ({ buttons, item, data, index }) => {
+const Rendertask = ({buttons, item, data, index}) => {
   const navigation = useNavigation();
+  // console.log('response', item);
+  // {id: 6, title: "MacBook Pro", ̃description: "MacBook Pro 2021 with mini-LED display may launch between September, November", price: 1749, discountPercentage: 11.02, …}
   return (
     <Pressable
-      onPress={() => navigation.navigate('Detailednote')}
+      key={item.id}
+      onPress={() => navigation.navigate('Detailednote', {item})}
       style={{
         width: Dimensions.get('window').width - 25,
         marginHorizontal: 10,
@@ -170,6 +175,7 @@ const TaskView = ({ buttons, item, data, index }) => {
         shadowOpacity: 0.23,
         shadowRadius: 2.62,
         elevation: 4,
+        flex: 1,
       }}>
       <View>
         <View>
@@ -182,37 +188,60 @@ const TaskView = ({ buttons, item, data, index }) => {
               color: '#111111',
               fontFamily: 'Inter-Medium',
             }}>
-            {item.title.substring(0, 30)}
+            {item?.Subject?.substring(0, 30)}
           </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              fontSize: 15,
-              color: '#333333',
-              fontFamily: 'Inter-Regular',
-              fontStyle: 'normal',
-            }}>
-            Date :- 24-04-2023
-          </Text>
+          <Hstack centered between>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontSize: 15,
+                color: '#333333',
+                fontFamily: 'Inter-Regular',
+                fontStyle: 'normal',
+                // flex: 1,
+              }}>
+              Date : {item.eventDate}
+            </Text>
+            {item.isAvailable ? (
+              <Text
+                style={{
+                  marginRight: 15,
+                  fontSize: 15,
+                  color: 'red',
+                  fontFamily: 'Inter-Regular',
+                  fontWeight: 'bold',
+                }}>
+                Permission
+              </Text>
+            ) : null}
+          </Hstack>
           <Text
             style={{
               margin: 10,
               fontSize: 15,
               color: '#333333',
               fontFamily: 'Inter-Regular',
+              // flex: 1,
+              width: Dimensions.get('window').width - 40,
+              // width: '20%',
             }}>
             {item.description.substring(0, 150)}
+            {item.description.length > 150 ? '...' : null}
           </Text>
-          <Text
-            style={{
-              marginLeft: 10,
-              fontSize: 15,
-              color: '#33333390',
-              fontFamily: 'Inter-Regular',
-              fontStyle: 'italic',
-            }}>
-            Assignor : {item.description.substring(0, 10)}
-          </Text>
+          <Hstack centered>
+            <Text
+              style={{
+                marginLeft: 10,
+                fontSize: 15,
+                color: '#33333390',
+                fontFamily: 'Inter-Regular',
+                fontStyle: 'italic',
+                // flex: 1,
+                // backgroundColor: 'green',
+              }}>
+              Assignor : {item.assignor}
+            </Text>
+          </Hstack>
         </View>
         {buttons && (
           <Hstack
@@ -233,13 +262,13 @@ const TaskView = ({ buttons, item, data, index }) => {
               // onPress={() => alert('Note sheet is approved')}>
               onPress={() =>
                 Alert.alert('', 'Note sheet is approved', [
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ])
               }>
               <Feather
                 name="check"
                 size={24}
-                style={{ color: '#2b9348', marginTop: 2 }}
+                style={{color: '#2b9348', marginTop: 2}}
               />
             </Custombutton>
             <Custombutton
@@ -247,13 +276,13 @@ const TaskView = ({ buttons, item, data, index }) => {
               color="#111"
               onPress={() =>
                 Alert.alert('', 'Note sheet is Rejected', [
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ])
               }>
               <Entypo
                 name="cross"
                 size={24}
-                style={{ color: '#E53E3E', marginRight: 0 }}
+                style={{color: '#E53E3E', marginRight: 0}}
               />
             </Custombutton>
             <Custombutton
@@ -261,13 +290,13 @@ const TaskView = ({ buttons, item, data, index }) => {
               color="#111"
               onPress={() =>
                 Alert.alert('', 'Notified converners to met in person', [
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ])
               }>
               <MaterialCommunityIcons
                 name="account-clock-outline"
                 size={24}
-                style={{ color: '#DD6B20', marginRight: 0 }}
+                style={{color: '#DD6B20', marginRight: 0}}
               />
             </Custombutton>
             <Custombutton
@@ -276,13 +305,13 @@ const TaskView = ({ buttons, item, data, index }) => {
               // onPress={() => (alert('To select to forward'))}>
               onPress={() =>
                 Alert.alert('', 'To select to forward', [
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
                 ])
               }>
               <MaterialCommunityIcons
                 name="fast-forward"
                 size={24}
-                style={{ color: '#3182CE99', marginRight: 0 }}
+                style={{color: '#3182CE99', marginRight: 0}}
               />
             </Custombutton>
           </Hstack>
@@ -292,7 +321,7 @@ const TaskView = ({ buttons, item, data, index }) => {
   );
 };
 
-const Options = ({ showbuttons }) => {
+const Options = ({showbuttons, Approved}) => {
   const [visible, setVisible] = useState(false);
   const [buttons, setbuttons] = useState(false);
   const [status, setstatus] = useState(false);
@@ -308,9 +337,10 @@ const Options = ({ showbuttons }) => {
     const res = await fetch(`https://dummyjson.com/products/?limit=${limit}`);
     setLoading(false);
     const json = await res.json();
-    setlimit(limit + 10);
+    // setlimit(limit + 10);
     let response = json.products;
-    setData(response);
+    // console.log('Items', Itemsdata);
+    setData(Itemsdata);
     setOldData(response);
   };
 
@@ -325,17 +355,17 @@ const Options = ({ showbuttons }) => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       {/* <CustomHeader search={search} searchFilterFunction={searchFilterFunction} setSearch={setSearch} searchRef={searchRef} setVisible={setVisible}/> */}
       {showbuttons ? (
-        <Hstack centered styles={{ padding: 10, backgroundColor: '#3182CE10' }}>
-          <View style={{ flex: 1 }} />
+        <Hstack centered styles={{padding: 10, backgroundColor: '#3182CE10'}}>
+          <View style={{flex: 1}} />
           <ToggleSwitch
             isOn={buttons}
             onColor="#3182CE"
             offColor={α(colors.primary, 0.2)}
             label="Show buttons"
-            labelStyle={{ color: 'black', fontWeight: '900' }}
+            labelStyle={{color: 'black', fontWeight: '900'}}
             size="medium"
             onToggle={abc => {
               setbuttons(!buttons);
@@ -369,9 +399,36 @@ const Options = ({ showbuttons }) => {
         data={data}
         // stickyHeaderHiddenOnScroll
         showsVerticalScrollIndicator={false}
-        renderItem={({ item, index }) => {
+        renderItem={({item, index}) => {
           return (
-            <TaskView item={item} index={index} data={data} buttons={buttons} />
+            <>
+              {showbuttons ? (
+                item.isAvailable && (
+                  <Rendertask
+                    item={item}
+                    index={index}
+                    data={data}
+                    buttons={buttons}
+                  />
+                )
+              ) : Approved ? (
+                !item.isAvailable && (
+                  <Rendertask
+                    item={item}
+                    index={index}
+                    data={data}
+                    buttons={buttons}
+                  />
+                )
+              ) : (
+                <Rendertask
+                  item={item}
+                  index={index}
+                  data={data}
+                  buttons={buttons}
+                />
+              )}
+            </>
           );
         }}
         onRefresh={onRefresh}
@@ -381,11 +438,12 @@ const Options = ({ showbuttons }) => {
         onEndReachedThreshold={0.5}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
-        style={{ flex: 1, backgroundColor: '#3182CE10' }}
+        style={{flex: 1, backgroundColor: '#3182CE10'}}
         // style={{ flex: 1, backgroundColor: α(colors.primary, 0.1) }}
         contentContainerStyle={[{}]}
+        ListFooterComponent={<View style={{paddingBottom: 70}} />}
         ListEmptyComponent={
-          <View style={{ flex: 1 }}>
+          <View style={{flex: 1}}>
             {Loading ? (
               <View
                 style={{
@@ -419,7 +477,7 @@ const Options = ({ showbuttons }) => {
           </View>
         }
       />
-      <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
+      <View style={{position: 'absolute', bottom: 20, right: 20}}>
         <TouchableOpacity
           onPress={() => navigation.navigate('CreateNotesheet')}
           style={{
@@ -435,7 +493,7 @@ const Options = ({ showbuttons }) => {
           <MaterialCommunityIcons
             name="plus"
             size={40}
-            style={{ color: '#fff', marginRight: 0 }}
+            style={{color: '#fff', marginRight: 0}}
           />
         </TouchableOpacity>
       </View>
