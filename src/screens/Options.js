@@ -16,19 +16,19 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native';
-import React, {useEffect, useRef, useState} from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import {NavigationContainer} from '@react-navigation/native';
-import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Hstack from '../component/Hstack';
 import ToggleSwitch from 'toggle-switch-react-native';
 import α from 'color-alpha';
-import {useNavigation} from '@react-navigation/native';
-import {colors} from '../constants';
-import {Itemsdata} from '../database/Database';
+import { useNavigation } from '@react-navigation/native';
+import { colors } from '../constants';
+import { Itemsdata } from '../database/Database';
 
 if (
   Platform.OS === 'android' &&
@@ -53,6 +53,7 @@ export const CustomHeader = ({
         height: 70,
         marginTop: 20,
         justifyContent: 'space-between',
+        backgroundColor: colors.tempbg,
       }}>
       <View
         style={{
@@ -67,12 +68,12 @@ export const CustomHeader = ({
         <AntDesign
           name="search1"
           size={22}
-          style={{color: '#ef233c99', marginLeft: 8}}
+          style={{ color: '#ef233c99', marginLeft: 8 }}
         />
         <TextInput
           ref={searchRef}
           placeholder="Search Notesheet here..."
-          style={{width: '76%', height: 50}}
+          style={{ width: '76%', height: 50 }}
           value={search}
           placeholderTextColor="#00000050"
           onChangeText={txt => {
@@ -102,7 +103,7 @@ export const CustomHeader = ({
 };
 
 export const Custombutton = props => {
-  const {title, color, end, onPress} = props;
+  const { title, color, end, onPress } = props;
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -125,7 +126,7 @@ export const Custombutton = props => {
 
           elevation: 2,
         },
-        !end && {marginHorizontal: 8},
+        !end && { marginHorizontal: 8 },
       ]}>
       {/* <Hstack centered> */}
       {props.children}
@@ -145,14 +146,14 @@ export const Custombutton = props => {
   );
 };
 
-const Rendertask = ({buttons, item, data, index}) => {
+const Rendertask = ({ buttons, item, data, index }) => {
   const navigation = useNavigation();
   // console.log('response', item);
   // {id: 6, title: "MacBook Pro", ̃description: "MacBook Pro 2021 with mini-LED display may launch between September, November", price: 1749, discountPercentage: 11.02, …}
   return (
     <Pressable
       key={item.id}
-      onPress={() => navigation.navigate('Detailednote', {item})}
+      onPress={() => navigation.navigate('Detailednote', { item })}
       style={{
         width: Dimensions.get('window').width - 25,
         marginHorizontal: 10,
@@ -211,7 +212,43 @@ const Rendertask = ({buttons, item, data, index}) => {
                   fontFamily: 'Inter-Regular',
                   fontWeight: 'bold',
                 }}>
-                Permission
+                Permission!
+              </Text>
+            ) : null}
+            {item.status == 'Pending' ? (
+              <Text
+                style={{
+                  marginRight: 15,
+                  fontSize: 15,
+                  color: '#3a86ff',
+                  fontFamily: 'Inter-Regular',
+                  fontWeight: 'bold',
+                }}>
+                Pending
+              </Text>
+            ) : null}
+            {item.status == 'Approved' ? (
+              <Text
+                style={{
+                  marginRight: 15,
+                  fontSize: 15,
+                  color: '#38b000',
+                  fontFamily: 'Inter-Regular',
+                  fontWeight: 'bold',
+                }}>
+                Approved
+              </Text>
+            ) : null}
+            {item.status == 'Others' ? (
+              <Text
+                style={{
+                  marginRight: 15,
+                  fontSize: 15,
+                  color: '#ffc857',
+                  fontFamily: 'Inter-Regular',
+                  fontWeight: 'bold',
+                }}>
+                Others
               </Text>
             ) : null}
           </Hstack>
@@ -262,13 +299,13 @@ const Rendertask = ({buttons, item, data, index}) => {
               // onPress={() => alert('Note sheet is approved')}>
               onPress={() =>
                 Alert.alert('', 'Note sheet is approved', [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
                 ])
               }>
               <Feather
                 name="check"
                 size={24}
-                style={{color: '#2b9348', marginTop: 2}}
+                style={{ color: '#2b9348', marginTop: 2 }}
               />
             </Custombutton>
             <Custombutton
@@ -276,13 +313,13 @@ const Rendertask = ({buttons, item, data, index}) => {
               color="#111"
               onPress={() =>
                 Alert.alert('', 'Note sheet is Rejected', [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
                 ])
               }>
               <Entypo
                 name="cross"
                 size={24}
-                style={{color: '#E53E3E', marginRight: 0}}
+                style={{ color: '#E53E3E', marginRight: 0 }}
               />
             </Custombutton>
             <Custombutton
@@ -290,13 +327,13 @@ const Rendertask = ({buttons, item, data, index}) => {
               color="#111"
               onPress={() =>
                 Alert.alert('', 'Notified converners to met in person', [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
                 ])
               }>
               <MaterialCommunityIcons
                 name="account-clock-outline"
                 size={24}
-                style={{color: '#DD6B20', marginRight: 0}}
+                style={{ color: '#DD6B20', marginRight: 0 }}
               />
             </Custombutton>
             <Custombutton
@@ -305,13 +342,13 @@ const Rendertask = ({buttons, item, data, index}) => {
               // onPress={() => (alert('To select to forward'))}>
               onPress={() =>
                 Alert.alert('', 'To select to forward', [
-                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                  { text: 'OK', onPress: () => console.log('OK Pressed') },
                 ])
               }>
               <MaterialCommunityIcons
                 name="fast-forward"
                 size={24}
-                style={{color: '#3182CE99', marginRight: 0}}
+                style={{ color: '#3182CE99', marginRight: 0 }}
               />
             </Custombutton>
           </Hstack>
@@ -321,7 +358,7 @@ const Rendertask = ({buttons, item, data, index}) => {
   );
 };
 
-const Options = ({showbuttons, Approved}) => {
+const Options = ({ showbuttons, Approved, filterData }) => {
   const [visible, setVisible] = useState(false);
   const [buttons, setbuttons] = useState(false);
   const [status, setstatus] = useState(false);
@@ -332,15 +369,27 @@ const Options = ({showbuttons, Approved}) => {
   const [Loading, setLoading] = useState(false);
   const navigation = useNavigation();
 
-  const tempdata = {};
+  // console.log(bigCities);
+  const Tempdata = [];
+
+  const FilteredData = Itemsdata => {
+    for (let i = 0; i < Itemsdata.length; i++) {
+      if (Itemsdata[i].status === filterData) {
+        Tempdata.push(Itemsdata[i]);
+      }
+    }
+
+    return Tempdata;
+  };
   const fetchdata = async () => {
     const res = await fetch(`https://dummyjson.com/products/?limit=${limit}`);
     setLoading(false);
     const json = await res.json();
     // setlimit(limit + 10);
     let response = json.products;
-    // console.log('Items', Itemsdata);
-    setData(Itemsdata);
+    filterData ? setData(FilteredData(Itemsdata)) : setData(Itemsdata);
+
+    // setData(Itemsdata);
     setOldData(response);
   };
 
@@ -355,17 +404,17 @@ const Options = ({showbuttons, Approved}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       {/* <CustomHeader search={search} searchFilterFunction={searchFilterFunction} setSearch={setSearch} searchRef={searchRef} setVisible={setVisible}/> */}
       {showbuttons ? (
-        <Hstack centered styles={{padding: 10, backgroundColor: '#3182CE10'}}>
-          <View style={{flex: 1}} />
+        <Hstack centered styles={{ padding: 10, backgroundColor: colors.tempbg }}>
+          <View style={{ flex: 1 }} />
           <ToggleSwitch
             isOn={buttons}
             onColor="#3182CE"
             offColor={α(colors.primary, 0.2)}
             label="Show buttons"
-            labelStyle={{color: 'black', fontWeight: '900'}}
+            labelStyle={{ color: 'black', fontWeight: '900' }}
             size="medium"
             onToggle={abc => {
               setbuttons(!buttons);
@@ -399,36 +448,14 @@ const Options = ({showbuttons, Approved}) => {
         data={data}
         // stickyHeaderHiddenOnScroll
         showsVerticalScrollIndicator={false}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
-            <>
-              {showbuttons ? (
-                item.isAvailable && (
-                  <Rendertask
-                    item={item}
-                    index={index}
-                    data={data}
-                    buttons={buttons}
-                  />
-                )
-              ) : Approved ? (
-                !item.isAvailable && (
-                  <Rendertask
-                    item={item}
-                    index={index}
-                    data={data}
-                    buttons={buttons}
-                  />
-                )
-              ) : (
-                <Rendertask
-                  item={item}
-                  index={index}
-                  data={data}
-                  buttons={buttons}
-                />
-              )}
-            </>
+            <Rendertask
+              item={item}
+              index={index}
+              data={data}
+              buttons={buttons}
+            />
           );
         }}
         onRefresh={onRefresh}
@@ -438,12 +465,12 @@ const Options = ({showbuttons, Approved}) => {
         onEndReachedThreshold={0.5}
         initialNumToRender={10}
         maxToRenderPerBatch={10}
-        style={{flex: 1, backgroundColor: '#3182CE10'}}
+        style={{ flex: 1, backgroundColor: colors.tempbg }}
         // style={{ flex: 1, backgroundColor: α(colors.primary, 0.1) }}
         contentContainerStyle={[{}]}
-        ListFooterComponent={<View style={{paddingBottom: 70}} />}
+        ListFooterComponent={<View style={{ paddingBottom: 70 }} />}
         ListEmptyComponent={
-          <View style={{flex: 1}}>
+          <View style={{ flex: 1 }}>
             {Loading ? (
               <View
                 style={{
@@ -477,7 +504,7 @@ const Options = ({showbuttons, Approved}) => {
           </View>
         }
       />
-      <View style={{position: 'absolute', bottom: 20, right: 20}}>
+      <View style={{ position: 'absolute', bottom: 20, right: 20 }}>
         <TouchableOpacity
           onPress={() => navigation.navigate('CreateNotesheet')}
           style={{
@@ -493,7 +520,7 @@ const Options = ({showbuttons, Approved}) => {
           <MaterialCommunityIcons
             name="plus"
             size={40}
-            style={{color: '#fff', marginRight: 0}}
+            style={{ color: '#fff', marginRight: 0 }}
           />
         </TouchableOpacity>
       </View>

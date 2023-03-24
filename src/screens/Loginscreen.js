@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,16 +11,17 @@ import {
   Alert,
   ActivityIndicator,
   Keyboard,
+  StatusBar,
 } from 'react-native';
-import {useNavigation} from '@react-navigation/native';
-import {colors} from '../constants';
+import { useNavigation } from '@react-navigation/native';
+import { colors } from '../constants';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 // import Hstack from '../component/Hstack';
 import fetchService from '../services/fetchService';
-import {Formik} from 'formik';
+import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Hstack from '../component/Hstack';
 
@@ -140,7 +141,8 @@ export default function Loginscreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}}>
+    <KeyboardAvoidingView style={{ flex: 1 }}>
+      <StatusBar animated={true} backgroundColor={colors.secondary} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View
           style={{
@@ -184,7 +186,7 @@ export default function Loginscreen() {
                 }) => {
                   {
                   }
-                  const {EmailId, PWord} = values;
+                  const { EmailId, PWord } = values;
                   return (
                     <>
                       <Styledtextinput

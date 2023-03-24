@@ -8,6 +8,7 @@ import {
   TextInput,
   ScrollView,
   Alert,
+  LayoutAnimation,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 // import {colors} from '../../constants';
@@ -154,7 +155,7 @@ const CustomTextInput = ({
   );
 };
 
-const CustomCheckboxHolder = ({setValues, Values, title, Nobox}) => {
+const CustomCheckboxHolder = ({setValues, Values, title, Nobox, Animate}) => {
   return (
     <View
       style={{
@@ -179,6 +180,9 @@ const CustomCheckboxHolder = ({setValues, Values, title, Nobox}) => {
           style={{alignItems: 'center', marginTop: 10}}
           onClick={() => {
             setValues(!Values);
+            LayoutAnimation.configureNext(
+              LayoutAnimation.Presets.easeInEaseOut,
+            );
           }}
           isChecked={Values}
         />
@@ -376,6 +380,7 @@ export default function CreateNotesheet() {
           setValues={setOthers}
           Values={Others}
           title="Select Others for Approval"
+          Animate
         />
         {Others ? (
           <DropDownPicker
@@ -391,6 +396,8 @@ export default function CreateNotesheet() {
             listMode="MODAL"
             placeholder="Select concerned faculty"
             badgeDotColors={[colors.primary]}
+            searchable
+            searchPlaceholder="Search for Faculty here"
             textStyle={{
               // fontWeight: '600',
               // fontSize: 16,
@@ -432,18 +439,16 @@ export default function CreateNotesheet() {
         ) : null}
         <View>
           <TouchableOpacity
-            onPress={() => (
-              Alert.alert('Note Sheet is created'), navigation.goBack()
-            )}
+            onPress={() => (Alert.alert('Notessheet is created'), navigation.goBack())}
             style={{
               // padding: 10,
               backgroundColor: '#ca4b0b',
               justifyContent: 'center',
               alignItems: 'center',
               borderRadius: 10,
-              marginTop: 15,
-              opacity: 0.9,
-              height: 40,
+              marginTop: 35,
+              // opacity: 0.9,
+              height: 50,
             }}>
             <Text
               style={{
@@ -465,6 +470,7 @@ export default function CreateNotesheet() {
               marginVertical: 15,
               borderWidth: 1,
               borderColor: '#999',
+              height: 50,
             }}>
             <Text
               style={{

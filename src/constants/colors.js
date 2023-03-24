@@ -1,7 +1,8 @@
 export default colors = {
   primary: '#ca4b0b',
-  secondary: '#4263ec',
+    secondary: '#4263ec',
   white: '#FFF',
+  tempbg: '#fafafa',
   black: '#000',
   facebook: '#395185',
   google: '#db4A39',
