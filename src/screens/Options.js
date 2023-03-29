@@ -4,15 +4,12 @@ import {
   View,
   Text,
   FlatList,
-  Image,
   TextInput,
   TouchableOpacity,
-  Modal,
   Dimensions,
   Pressable,
   UIManager,
   Platform,
-  LayoutAnimation,
   ActivityIndicator,
   Alert,
 } from 'react-native';
@@ -21,8 +18,6 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
-import { NavigationContainer } from '@react-navigation/native';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import Hstack from '../component/Hstack';
 import ToggleSwitch from 'toggle-switch-react-native';
 import α from 'color-alpha';
@@ -125,6 +120,7 @@ export const Custombutton = props => {
           shadowRadius: 1.41,
 
           elevation: 2,
+          height: 50
         },
         !end && { marginHorizontal: 8 },
       ]}>
@@ -146,14 +142,103 @@ export const Custombutton = props => {
   );
 };
 
-const Rendertask = ({ buttons, item, data, index }) => {
+
+export const CustomactionButtons = (props) => {
+  const { widthMinus, item, onApprove, onReject, onMeet, onFwd } = props;
+  return (
+    <Hstack
+      centered
+      between
+      styles={[{
+        // marginLeft: 10,
+        marginBottom: 10,
+        // flex: 1,
+        // backgroundColor: 'red',
+        marginTop: 10,
+        width: Dimensions.get('window').width - 25,
+      }, props.style]}>
+      <Custombutton
+        title="Approve"
+        color="#111"
+        // onPress={() => alert('Note sheet is approved')}>
+        onPress={() =>
+          Alert.alert('', 'Note sheet is approved', [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ])
+        }>
+        <Feather
+          name="check"
+          size={24}
+          style={{ color: '#2b9348', marginTop: 2 }}
+        />
+      </Custombutton>
+      <Custombutton
+        title="Reject"
+        color="#111"
+        onPress={() =>
+          Alert.alert('', 'Note sheet is Rejected', [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ])
+        }>
+        <Entypo
+          name="cross"
+          size={24}
+          style={{ color: '#E53E3E', marginRight: 0 }}
+        />
+      </Custombutton>
+      <Custombutton
+        title="Meet"
+        color="#111"
+        onPress={() =>
+          Alert.alert('', 'Notified converners to met in person', [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ])
+        }>
+        <MaterialCommunityIcons
+          name="account-clock-outline"
+          size={24}
+          style={{ color: '#DD6B20', marginRight: 0 }}
+        />
+      </Custombutton>
+      <Custombutton
+        title="Fwd"
+        color="#111"
+        // onPress={() => (alert('To select to forward'))}>
+        onPress={() =>
+          Alert.alert('', 'To select to forward', [
+            { text: 'OK', onPress: () => console.log('OK Pressed') },
+          ])
+        }>
+        <MaterialCommunityIcons
+          name="fast-forward"
+          size={24}
+          style={{ color: '#3182CE99', marginRight: 0 }}
+        />
+      </Custombutton>
+    </Hstack>
+  )
+}
+export const Rendertask = ({
+  item,
+  buttons,
+  data,
+  index,
+  fromFilter,
+  setModalVisible,
+  searchFilterFunction,
+}) => {
   const navigation = useNavigation();
-  // console.log('response', item);
-  // {id: 6, title: "MacBook Pro", ̃description: "MacBook Pro 2021 with mini-LED display may launch between September, November", price: 1749, discountPercentage: 11.02, …}
+  const customPress = item =>
+    fromFilter
+      ? (searchFilterFunction(''),
+        setModalVisible(false),
+        navigation.navigate('Detailednote', { item }))
+      : navigation.navigate('Detailednote', { item });
+
   return (
     <Pressable
       key={item.id}
-      onPress={() => navigation.navigate('Detailednote', { item })}
+      onPress={() => customPress(item)}
       style={{
         width: Dimensions.get('window').width - 25,
         marginHorizontal: 10,
@@ -201,7 +286,7 @@ const Rendertask = ({ buttons, item, data, index }) => {
                 fontStyle: 'normal',
                 // flex: 1,
               }}>
-              Date : {item.eventDate}
+              Date : {item?.eventDate ? item?.eventDate : '24-4-2023'}
             </Text>
             {item.isAvailable ? (
               <Text
@@ -262,8 +347,8 @@ const Rendertask = ({ buttons, item, data, index }) => {
               width: Dimensions.get('window').width - 40,
               // width: '20%',
             }}>
-            {item.description.substring(0, 150)}
-            {item.description.length > 150 ? '...' : null}
+            {item?.description.substring(0, 150)}
+            {item?.description.length > 150 ? '...' : null}
           </Text>
           <Hstack centered>
             <Text
@@ -276,7 +361,7 @@ const Rendertask = ({ buttons, item, data, index }) => {
                 // flex: 1,
                 // backgroundColor: 'green',
               }}>
-              Assignor : {item.assignor}
+              Assignor : {item?.assignor}
             </Text>
           </Hstack>
         </View>
@@ -388,6 +473,7 @@ const Options = ({ showbuttons, Approved, filterData }) => {
     // setlimit(limit + 10);
     let response = json.products;
     filterData ? setData(FilteredData(Itemsdata)) : setData(Itemsdata);
+    setLoading(false);
 
     // setData(Itemsdata);
     setOldData(response);

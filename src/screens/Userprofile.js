@@ -1,47 +1,42 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
-  StyleSheet,
-  Image,
   Text,
   TouchableOpacity,
   View,
   TextInput,
-  Modal,
-  PermissionsAndroid,
   Alert,
-  TouchableWithoutFeedback,
-  ActivityIndicator,
   ScrollView,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 // import { Hstack, KeyboardavoidingWrapper, ImagePicker } from '../../components';
 // import { colors } from '../../constants';
 
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
 
-import { Dimensions } from 'react-native';
 import { colors } from '../constants';
 import Hstack from '../component/Hstack';
 import { Formik } from 'formik';
-import KeyboardavoidingWrapper from '../component/KeyboardavoidingWrapper';
-const { width, height } = Dimensions.get('window');
 
 const Styledtextinput = props => {
-  const [text, onChangeText] = React.useState('');
-
-  // const [text, onChangeText] = React.useState("");
-  // https://godconnect.online/api/UserMgmtAPI/ProfileCheck
-  const [hidePass, setHidePass] = React.useState(true);
-  const navigation = useNavigation();
   const inputRef = React.useRef();
 
   return (
-    <View>
+    <View style={{ marginTop: -10 }}>
+      <Text
+        style={{
+          fontSize: 13,
+          fontWeight: '400',
+          fontFamily: 'Roboto',
+          color: '#888888',
+          marginTop: 25,
+        }}>
+        {props?.title}
+      </Text>
       <View
         style={{
           flexDirection: 'row',
@@ -51,33 +46,39 @@ const Styledtextinput = props => {
           borderBottomWidth: 1,
           borderColor: colors.lightblack,
           alignItems: 'center',
-          marginTop: 10,
+          marginBottom: -5,
+          marginTop: -5,
           // paddingBottom:10,
         }}>
-        <FontAwesome
-          name="user-circle"
-          size={22}
-          color={colors.primary}
-          style={
-            {
-              // marginBottom: -10
-            }
-          }
-        />
-
+        {props?.customicon && props.flirt && (
+          <Entypo name="emoji-flirt" size={20} color={colors.primary} />
+        )}
+        {props?.customicon && props.call && (
+          <Ionicons name="call" size={20} color={colors.primary} />
+        )}
+        {props?.customicon && props.email && (
+          <MaterialCommunityIcons
+            name="email-outline"
+            size={20}
+            color={colors.primary}
+          />
+        )}
+        {!props?.customicon && (
+          <FontAwesome name="user-circle" size={22} color={colors.primary} />
+        )}
         <TextInput
           style={{
             // marginLeft: 5,
             fontWeight: '600',
-            fontSize: 19,
+            fontSize: 18,
             // marginBottom: -10,
             color: colors.lightblack,
             flex: 1,
             marginLeft: 10,
-            marginTop: 5,
+            // marginTop: 5,
           }}
           ref={inputRef}
-          value={text}
+          // value={text}
           // secureTextEntry={hidePass ? true : false}
 
           placeholder={props.lable}
@@ -125,28 +126,29 @@ const Styledtextinput = props => {
   );
 };
 
-export default function Userprofile({ route, navigation }) {
+export default function Userprofile({ navigation }) {
   const [NMSid, setNMSid] = useState('');
   const [Name, onChangeName] = useState('');
   const [Lastname, onChangeLastname] = useState('');
-  const [Phone, onChangePhone] = useState('Mobile number here');
-  const [Position, onChangePosition] = useState('Assistant Professor');
-  const [School, setSchool] = useState('SCSE');
-  const [Department, setDepartment] = useState('CSE');
+  const [Phone, onChangePhone] = useState('8929495906');
+  const [Position, onChangePosition] = useState('Frontend');
+  const [School, setSchool] = useState('Mobile Team');
+  const [Department, setDepartment] = useState('Avalonmeta');
 
   const [dataRestored, setDataRestored] = useState(false);
   const [Gender, setGender] = useState('');
   const [Newdata, setNewdata] = useState(null);
   const [newdata, Setnewdata] = useState({
     // });
-    Name: '',
-    Lastname: '',
+    Name: 'Ashish',
+    Lastname: 'Gupta',
     Gender: '',
-    NMSid: 'Lorem-NMS-ID',
-    email: '',
-    Position: 'Assistant Professor',
+    NMSid: '209301184',
+    email: 'ashish@avalonmeta.com',
+    Position: 'Frontend',
     School: 'SCSE',
     Department: 'CSE',
+    Mobile: '8929495906',
   });
   // const [UserInfo, SetUserInfo] = useState();
 
@@ -156,14 +158,12 @@ export default function Userprofile({ route, navigation }) {
     // Gender: '',
     NMSid: 'Lorem-NMS-ID',
     email: '',
-    Position: 'Assistant Professor',
+    Position: 'Frontend',
     School: 'SCSE',
     Department: 'CSE',
+    Mobile: '8929495906',
   };
 
-  const regex = /^(?:\d{10}|\w+@\w+\.\w{2,3})$/;
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
   const validationSchema = Yup.object({
     Name: Yup.string()
       .matches(/^[A-Za-z ]*$/, 'Please enter valid name')
@@ -178,6 +178,10 @@ export default function Userprofile({ route, navigation }) {
       .matches(/[A-Z0-9]{16}/, 'NMS id is not valid')
       .min(16, 'to short')
       .max(16, 'to long'),
+    Mobile: Yup.string()
+      .required('required')
+      .min(10, 'to short')
+      .max(10, 'to long'),
     email: Yup.string()
       .trim()
       .email('Invalid email format')
@@ -294,8 +298,8 @@ export default function Userprofile({ route, navigation }) {
                 <Feather
                   name="edit"
                   size={20}
-                  color={colors.primary}
-                  style={{}}
+                  color={colors.secondary}
+                // style={{ marginTop: -10, marginLeft: -10, zIndez: 400 }}
                 />
               </TouchableOpacity>
             </Hstack>
@@ -317,10 +321,8 @@ export default function Userprofile({ route, navigation }) {
               values,
               errors,
               touched,
-              isSubmitting,
               handleChange,
               handleBlur,
-              handleSubmit,
             }) => {
               {
               }
@@ -330,7 +332,7 @@ export default function Userprofile({ route, navigation }) {
 
                 NMSid,
                 email,
-                EmailId,
+                Mobile,
               } = values;
               return (
                 <>
@@ -340,7 +342,7 @@ export default function Userprofile({ route, navigation }) {
                     placeholder="Enter Your First Name"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
-                    // edit
+                    edit
                     autoComplete="name"
                     MaterialCommunityIcons
                     error={touched.Name && errors.Name}
@@ -348,13 +350,15 @@ export default function Userprofile({ route, navigation }) {
                     onBlur={handleBlur('Name')}
                     // returnKeyType="next"
                     blurOnSubmit={false}
+                    title='First name'
                   />
                   <Styledtextinput
+                    title='Last name'
                     value={Lastname}
                     placeholder="Enter Your Last Name"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
-                    // edit/
+                    edit
                     autoComplete="name"
                     MaterialCommunityIcons
                     error={touched.Lastname && errors.Lastname}
@@ -363,6 +367,7 @@ export default function Userprofile({ route, navigation }) {
                     blurOnSubmit={false}
                   />
                   <Styledtextinput
+                    title='NMS-id/Registraion number'
                     value={NMSid}
                     placeholder="Your NMS id"
                     placeholderTextColor={colors.lightblack}
@@ -375,8 +380,11 @@ export default function Userprofile({ route, navigation }) {
                     onBlur={handleBlur('NMSid')}
                     blurOnSubmit={false}
                     autoCorrect={false}
+                    customicon
+                    flirt
                   />
                   <Styledtextinput
+                    title='Potision'
                     value={Position}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
@@ -384,11 +392,9 @@ export default function Userprofile({ route, navigation }) {
                     editable={false}
                     onChangeText={onChangePosition}
                   />
-                  {/* Position: 'Assistant Professor',
-    School: 'SCSE',
-    Department: 'CSE', */}
                   <Styledtextinput
-                    value={Phone}
+                    title='School'
+                    value={School}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
@@ -396,6 +402,7 @@ export default function Userprofile({ route, navigation }) {
                     onChangeText={setSchool}
                   />
                   <Styledtextinput
+                    title='Department'
                     value={Department}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
@@ -404,19 +411,30 @@ export default function Userprofile({ route, navigation }) {
                     onChangeText={setDepartment}
                   />
                   <Styledtextinput
-                    value={Phone}
-                    placeholder="+91 00000 00000"
+                    title='Mobile number'
+                    value={Mobile}
+                    placeholder="Enter Your Email address"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
-                    editable={false}
-                    onChangeText={onChangePhone}
+                    edit
+                    // onChangeText={onChangeEmail}
+                    customicon
+                    call
+                    keyboardType="number-pad"
+                    MaterialCommunityIcons
+                    error={touched.email && errors.email}
+                    onChangeText={handleChange('Mobile')}
+                    onBlur={handleBlur('Mobile')}
                   />
                   <Styledtextinput
+                    title='Email'
                     value={email}
                     placeholder="Enter Your Email address"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
                     edit
+                    customicon
+                    email
                     // onChangeText={onChangeEmail}
                     keyboardType="email-address"
                     MaterialCommunityIcons
@@ -426,7 +444,8 @@ export default function Userprofile({ route, navigation }) {
                   />
                   <TouchableOpacity
                     onPress={() => (
-                      Alert.alert('Note Sheet is created'), navigation.goBack()
+                      Alert.alert('Profile details were saved'),
+                      navigation.goBack()
                     )}
                     style={{
                       // padding: 10,
@@ -434,7 +453,7 @@ export default function Userprofile({ route, navigation }) {
                       justifyContent: 'center',
                       alignItems: 'center',
                       borderRadius: 10,
-                      marginTop: 15,
+                      marginTop: 25,
                       opacity: 0.9,
                       height: 50,
                     }}>

@@ -4,3 +4,5 @@ export { default as CreateNotesheet } from './CreateNotesheet';
 export { default as DetailedNote } from './DetailedNote';
 export { default as Userprofile } from './Userprofile';
 // export { default as colors } from './colors';
+// export { default as colors } from './colors';
+// export { default as colors } from './colors';
