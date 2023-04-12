@@ -18,7 +18,7 @@ function App() {
           screenOptions={{
             headerShown: false,
           }}
-          initialRouteName="Appnavigator">
+          initialRouteName="Authavigator">
           <Stack.Screen name="Authnavigator" component={Loginscreen} />
           <Stack.Screen name="Appnavigator" component={Appnavigator} />
         </Stack.Navigator>

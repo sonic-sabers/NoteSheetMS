@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { CreateNotesheet, DetailedNote, Userprofile } from '../screens';
+import { CreateNotesheet, DetailedNote, Userprofile, Forwardscreen } from '../screens';
 import { Rootnavigator } from '.';
 import { StatusBar } from 'react-native';
 import { colors } from '../constants';
@@ -41,6 +41,14 @@ function Appnavigator() {
             // headerShown: 'true',
           })}
           component={Userprofile}
+        />
+        <Stack.Screen
+          name="Forwardscreen"
+          options={({ route }) => ({
+            title: 'Forward Note Sheet',
+            headerShown: 'true',
+          })}
+          component={Forwardscreen}
         />
       </Stack.Navigator>
     </>

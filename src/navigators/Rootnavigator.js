@@ -26,6 +26,7 @@ import { colors } from '../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { Itemsdata } from '../database/Database';
 import { Rendertask } from '../screens/Options';
+import α from 'color-alpha';
 
 const windowWidth = Dimensions.get('window').width;
 function MyTabBar({ state, descriptors, navigation }) {
@@ -99,12 +100,15 @@ function MyTabBar({ state, descriptors, navigation }) {
   };
 
   return (
-    <View>
+    <View
+      style={{
+        backgroundColor: α(colors.primary, 0.1),
+      }}>
       <Hstack
         between
         styles={{
           padding: 10,
-          backgroundColor: colors.white,
+          // backgroundColor: α(colors.primary, 0.4),
         }}>
         <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(true)}>
           <Hstack
@@ -169,8 +173,9 @@ function MyTabBar({ state, descriptors, navigation }) {
           flex: 0,
           height: 40,
           flexDirection: 'row',
-          backgroundColor: '#ffffff',
+          // backgroundColor: '#caf0f830',
           borderBottomColor: '#ffffff',
+          // backgroundColor: α(colors.primary, 0.4),
           borderBottomWidth: 1,
         }}>
         {state.routes.map((route, index) => {
@@ -215,7 +220,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                 alignItems: 'center',
                 borderBottomColor: isFocused ? colors.primary : 'transparent',
                 borderBottomWidth: 1,
-                marginBottom: -1,
+                // marginBottom: -1,
               }}>
               <Animated.Text
                 style={{
@@ -223,7 +228,8 @@ function MyTabBar({ state, descriptors, navigation }) {
                   width: windowWidth / 3,
                   textAlign: 'center',
                   // ...subTextThic,
-                  color: isFocused ? colors.primary : '#00000050',
+                  color: isFocused ? colors.primary : '#495057',
+                  fontWeight: '600'
                 }}>
                 {label}
               </Animated.Text>

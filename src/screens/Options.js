@@ -120,7 +120,7 @@ export const Custombutton = props => {
           shadowRadius: 1.41,
 
           elevation: 2,
-          height: 50
+          height: 50,
         },
         !end && { marginHorizontal: 8 },
       ]}>
@@ -142,21 +142,23 @@ export const Custombutton = props => {
   );
 };
 
-
-export const CustomactionButtons = (props) => {
+export const CustomactionButtons = props => {
   const { widthMinus, item, onApprove, onReject, onMeet, onFwd } = props;
   return (
     <Hstack
       centered
       between
-      styles={[{
-        // marginLeft: 10,
-        marginBottom: 10,
-        // flex: 1,
-        // backgroundColor: 'red',
-        marginTop: 10,
-        width: Dimensions.get('window').width - 25,
-      }, props.style]}>
+      styles={[
+        {
+          // marginLeft: 10,
+          marginBottom: 10,
+          // flex: 1,
+          // backgroundColor: 'red',
+          marginTop: 10,
+          width: Dimensions.get('window').width - 25,
+        },
+        props.style,
+      ]}>
       <Custombutton
         title="Approve"
         color="#111"
@@ -216,8 +218,8 @@ export const CustomactionButtons = (props) => {
         />
       </Custombutton>
     </Hstack>
-  )
-}
+  );
+};
 export const Rendertask = ({
   item,
   buttons,
@@ -253,14 +255,16 @@ export const Rendertask = ({
         backgroundColor: '#ffffff',
         paddingVertical: 5,
         paddingBottom: 10,
-        shadowColor: '#000',
+        shadowColor: '#f77f00',
         shadowOffset: {
           width: 0,
-          height: 2,
+          height: 4,
         },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-        elevation: 4,
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9,
+
         flex: 1,
       }}>
       <View>
@@ -425,11 +429,7 @@ export const Rendertask = ({
               title="Fwd"
               color="#111"
               // onPress={() => (alert('To select to forward'))}>
-              onPress={() =>
-                Alert.alert('', 'To select to forward', [
-                  { text: 'OK', onPress: () => console.log('OK Pressed') },
-                ])
-              }>
+              onPress={() => navigation.navigate('Forwardscreen')}>
               <MaterialCommunityIcons
                 name="fast-forward"
                 size={24}
@@ -554,7 +554,7 @@ const Options = ({ showbuttons, Approved, filterData }) => {
         style={{ flex: 1, backgroundColor: colors.tempbg }}
         // style={{ flex: 1, backgroundColor: α(colors.primary, 0.1) }}
         contentContainerStyle={[{}]}
-        ListFooterComponent={<View style={{ paddingBottom: 70 }} />}
+        ListFooterComponent={<View style={{ paddingBottom: 70, }} />}
         ListEmptyComponent={
           <View style={{ flex: 1 }}>
             {Loading ? (

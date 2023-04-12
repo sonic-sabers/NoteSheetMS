@@ -12,6 +12,8 @@ import {
   ActivityIndicator,
   Keyboard,
   StatusBar,
+  ImageBackground,
+  Image,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { colors } from '../constants';
@@ -97,6 +99,9 @@ const Styledtextinput = props => {
   );
 };
 
+const image = { uri: 'https://reactjs.org/logo-og.png' };
+const logoRatio = 500 / 142;
+const logoHeight = 60;
 export default function Loginscreen() {
   const [Error, setError] = useState('');
   const navigation = useNavigation();
@@ -144,118 +149,138 @@ export default function Loginscreen() {
     <KeyboardAvoidingView style={{ flex: 1 }}>
       <StatusBar animated={true} backgroundColor={colors.secondary} />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View
+        <ImageBackground
+          // source={image}
+          source={require('../assets/Images/BG-main.png')}
+          resizeMode="cover"
           style={{
-            backgroundColor: colors.secondary,
-            padding: 15,
             flex: 1,
-            paddingRight: 20,
+            justifyContent: 'center',
           }}>
           <View
             style={{
+              // backgroundColor: colors.secondary,
+              padding: 15,
               flex: 1,
-              justifyContent: 'space-between',
-              paddingBottom: 10,
+              paddingRight: 20,
             }}>
-            <View>
-              <Text style={styles.hitext}>Hi</Text>
-              <Text style={styles.logintext}>Log In Here</Text>
-            </View>
             <View
               style={{
-                paddingBottom: 40,
+                flex: 1,
+                justifyContent: 'space-between',
+                paddingBottom: 10,
+                // backgroundColor:''
               }}>
-              <Formik
-                initialValues={UserInfo}
-                onSubmit={(values, formikActions) => {
-                  handlesLogin(values);
-                  setTimeout(() => {
-                    formikActions.resetForm();
-                    formikActions.setSubmitting(false);
-                  }, 4000);
-                }}
-                validationSchema={validationSchema}>
-                {({
-                  values,
-                  errors,
-                  touched,
-                  isSubmitting,
-                  handleChange,
-                  handleBlur,
-                  handleSubmit,
-                }) => {
-                  {
-                  }
-                  const { EmailId, PWord } = values;
-                  return (
-                    <>
-                      <Styledtextinput
-                        // onChangeText={setEmailId}
-                        placeholderTextColor={colors.inputs}
-                        title="Enter NMS ID"
-                        placeholder="NMS ID"
-                        value={EmailId}
-                        autoCapitalize="none"
-                        icon="email"
-                        // keyboardType='email-address'
-                        maxLength={8}
-                        // keyboardType="numeric"
-                        MaterialCommunityIcons
-                        error={touched.EmailId && errors.EmailId}
-                        onChangeText={handleChange('EmailId')}
-                        onBlur={handleBlur('EmailId')}
-                        selectionColor={colors.white}
-                        password={false}
-                        secureTextEntry={false}
-                      />
-                      <Styledtextinput
-                        // onChangeText={setPWord}
-                        value={PWord}
-                        placeholder="Password"
-                        placeholderTextColor={colors.inputs}
-                        autoCapitalize="none"
-                        title="Enter your Password"
-                        icon="lock"
-                        // keyboardType='password'
-                        error={touched.PWord && errors.PWord}
-                        onChangeText={handleChange('PWord')}
-                        onBlur={handleBlur('PWord')}
-                        password
-                        selectionColor={colors.white}
-                      />
+              <View>
+                <Image
+                  // source={image}
+                  source={require('../assets/Images/MUJ-Logo.png')}
+                  // resizeMode="cover"
+                  style={{
+                    // flex: 1,
+                    // justifyContent: 'center',
+                    height: logoHeight,
+                    width: logoHeight * logoRatio,
+                    marginTop: 30,
+                  }} />
+                <Text style={styles.hitext}>Hi</Text>
+                <Text style={styles.logintext}>Log In Here</Text>
+              </View>
+              <View
+                style={{
+                  paddingBottom: 40,
+                }}>
+                <Formik
+                  initialValues={UserInfo}
+                  onSubmit={(values, formikActions) => {
+                    handlesLogin(values);
+                    setTimeout(() => {
+                      formikActions.resetForm();
+                      formikActions.setSubmitting(false);
+                    }, 4000);
+                  }}
+                  validationSchema={validationSchema}>
+                  {({
+                    values,
+                    errors,
+                    touched,
+                    isSubmitting,
+                    handleChange,
+                    handleBlur,
+                    handleSubmit,
+                  }) => {
+                    {
+                    }
+                    const { EmailId, PWord } = values;
+                    return (
+                      <>
+                        <Styledtextinput
+                          // onChangeText={setEmailId}
+                          placeholderTextColor={colors.inputs}
+                          title="Enter NMS ID"
+                          placeholder="NMS ID"
+                          value={EmailId}
+                          autoCapitalize="none"
+                          icon="email"
+                          // keyboardType='email-address'
+                          maxLength={8}
+                          // keyboardType="numeric"
+                          MaterialCommunityIcons
+                          error={touched.EmailId && errors.EmailId}
+                          onChangeText={handleChange('EmailId')}
+                          onBlur={handleBlur('EmailId')}
+                          selectionColor={colors.white}
+                          password={false}
+                          secureTextEntry={false}
+                        />
+                        <Styledtextinput
+                          // onChangeText={setPWord}
+                          value={PWord}
+                          placeholder="Password"
+                          placeholderTextColor={colors.inputs}
+                          autoCapitalize="none"
+                          title="Enter your Password"
+                          icon="lock"
+                          // keyboardType='password'
+                          error={touched.PWord && errors.PWord}
+                          onChangeText={handleChange('PWord')}
+                          onBlur={handleBlur('PWord')}
+                          password
+                          selectionColor={colors.white}
+                        />
 
-                      <TouchableOpacity
-                        submitting={isSubmitting}
-                        onPress={handleSubmit}
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          padding: 15,
-                          borderRadius: 15,
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          // marginVertical: 20,
-                          marginTop: 20,
-                          height: 60,
-                        }}>
-                        {Loading ? (
-                          <ActivityIndicator />
-                        ) : (
-                          <Text
-                            style={{
-                              fontSize: 20,
-                              fontWeight: '700',
-                              // fontFamily: 'Roboto',
-                              color: colors.secondary,
-                            }}>
-                            Log In
-                          </Text>
-                        )}
-                      </TouchableOpacity>
-                    </>
-                  );
-                }}
-              </Formik>
-              {/* <Hstack centered styles={{ marginVertical: 15, }}>
+                        <TouchableOpacity
+                          submitting={isSubmitting}
+                          onPress={handleSubmit}
+                          style={{
+                            backgroundColor: '#FFFFFF',
+                            padding: 15,
+                            borderRadius: 15,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            // marginVertical: 20,
+                            marginTop: 20,
+                            height: 60,
+                          }}>
+                          {Loading ? (
+                            <ActivityIndicator />
+                          ) : (
+                            <Text
+                              style={{
+                                fontSize: 20,
+                                fontWeight: '700',
+                                // fontFamily: 'Roboto',
+                                color: colors.secondary,
+                              }}>
+                              Log In
+                            </Text>
+                          )}
+                        </TouchableOpacity>
+                      </>
+                    );
+                  }}
+                </Formik>
+                {/* <Hstack centered styles={{ marginVertical: 15, }}>
                 <View
                   style={styles.hline} />
                 <Text
@@ -275,9 +300,10 @@ export default function Loginscreen() {
                   Register
                 </Text>
               </TouchableOpacity> */}
+              </View>
             </View>
           </View>
-        </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
     // </KeyboardavoidingWrapper>

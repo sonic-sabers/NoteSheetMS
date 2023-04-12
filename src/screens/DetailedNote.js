@@ -8,22 +8,21 @@ import {
   Dimensions,
   TouchableOpacity,
   Share,
-  Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 // import {colors} from '../../constants';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Hstack from '../component/Hstack';
-import { CustomactionButtons, Custombutton } from './Options';
-import { colors } from '../constants';
+import {Custombutton} from './Options';
+import {colors} from '../constants';
 import α from 'color-alpha';
 
-const Detailes = ({ title, content, detail }) => {
+const Detailes = ({title, content, detail}) => {
   return (
-    <View style={{ marginBottom: 10 }}>
+    <View style={{marginBottom: 10}}>
       <Text
         style={{
           fontSize: 16,
@@ -44,7 +43,7 @@ const Detailes = ({ title, content, detail }) => {
   );
 };
 
-const Sharenotesheet = ({ data }) => {
+const Sharenotesheet = ({data}) => {
   const onShare = async data => {
     console.log('data', data);
     try {
@@ -79,13 +78,13 @@ const Sharenotesheet = ({ data }) => {
     </TouchableOpacity>
   );
 };
-export default function DetailedNote({ route }) {
+export default function DetailedNote({route}) {
   const navigation = useNavigation();
-  const { item } = route.params;
+  const {item} = route.params;
   // console.log('item', item);
 
   return (
-    <ScrollView style={{ flex: 1, padding: 15, backgroundColor: '#fff' }}>
+    <ScrollView style={{flex: 1, padding: 15, backgroundColor: '#fff'}}>
       <Hstack centered between>
         <Detailes title="Date" content="24-04-2023" detail={item?.eventDate} />
         <Sharenotesheet data={item} />
@@ -146,7 +145,7 @@ export default function DetailedNote({ route }) {
               <Feather
                 name="check"
                 size={24}
-                style={{ color: '#2b9348', marginTop: 2 }}
+                style={{color: '#2b9348', marginTop: 2}}
               />
             </Custombutton>
             <Custombutton
@@ -158,7 +157,7 @@ export default function DetailedNote({ route }) {
               <Entypo
                 name="cross"
                 size={24}
-                style={{ color: '#E53E3E', marginRight: 0 }}
+                style={{color: '#E53E3E', marginRight: 0}}
               />
             </Custombutton>
             <Custombutton
@@ -171,20 +170,18 @@ export default function DetailedNote({ route }) {
               <MaterialCommunityIcons
                 name="account-clock-outline"
                 size={24}
-                style={{ color: '#DD6B20', marginRight: 0 }}
+                style={{color: '#DD6B20', marginRight: 0}}
               />
             </Custombutton>
             <Custombutton
               end
               title="Fwd"
               color="#111"
-              onPress={() => (
-                navigation.goBack(), alert('To select to forward')
-              )}>
+              onPress={() => navigation.navigate('Forwardscreen')}>
               <MaterialCommunityIcons
                 name="fast-forward"
                 size={24}
-                style={{ color: '#3182CE99', marginRight: 0 }}
+                style={{color: '#3182CE99', marginRight: 0}}
               />
             </Custombutton>
           </Hstack>
@@ -198,7 +195,7 @@ export default function DetailedNote({ route }) {
           content="Status here"
         />
       )}
-      <View style={{ paddingBottom: 40 }} />
+      <View style={{paddingBottom: 40}} />
     </ScrollView>
   );
 }
