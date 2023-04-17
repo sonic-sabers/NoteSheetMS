@@ -17,7 +17,10 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as Yup from 'yup';
-
+import ToggleSwitch from 'toggle-switch-react-native';
+import α from 'color-alpha';
+import { useSelector, useDispatch } from 'react-redux';
+import { changeCount } from '../redux/actions/counts';
 import { colors } from '../constants';
 import Hstack from '../component/Hstack';
 import { Formik } from 'formik';
@@ -134,10 +137,19 @@ export default function Userprofile({ navigation }) {
   const [Position, onChangePosition] = useState('Frontend');
   const [School, setSchool] = useState('Mobile Team');
   const [Department, setDepartment] = useState('Avalonmeta');
+  const [buttons, setbuttons] = useState(false);
 
   const [dataRestored, setDataRestored] = useState(false);
   const [Gender, setGender] = useState('');
   const [Newdata, setNewdata] = useState(null);
+
+  const Counts = useSelector(store => store.count.count);
+  const dispatch = useDispatch();
+
+  console.log('count', Counts);
+  const handleAdmin = () => {
+    dispatch(changeCount(!Counts));
+  };
   const [newdata, Setnewdata] = useState({
     // });
     Name: 'Ashish',
@@ -304,6 +316,23 @@ export default function Userprofile({ navigation }) {
               </TouchableOpacity>
             </Hstack>
           </View>
+          <Hstack
+            centered
+            styles={{ marginVertical: 10 }}>
+            <View style={{ flex: 1 }} />
+            <ToggleSwitch
+              isOn={Counts}
+              onColor="#3182CE"
+              offColor={α(colors.primary, 0.2)}
+              label="Admin mode"
+              labelStyle={{ color: 'black', fontWeight: '900' }}
+              size="small"
+              onToggle={abc => {
+                // setbuttons(!buttons);
+                handleAdmin();
+              }}
+            />
+          </Hstack>
           <Formik
             // initialValues={UserInfo}
             initialValues={newdata ? newdata : UserInfo}
@@ -317,13 +346,7 @@ export default function Userprofile({ navigation }) {
               }, 1000);
             }}
             validationSchema={validationSchema}>
-            {({
-              values,
-              errors,
-              touched,
-              handleChange,
-              handleBlur,
-            }) => {
+            {({ values, errors, touched, handleChange, handleBlur }) => {
               {
               }
               const {
@@ -342,7 +365,6 @@ export default function Userprofile({ navigation }) {
                     placeholder="Enter Your First Name"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
-                    edit
                     autoComplete="name"
                     MaterialCommunityIcons
                     error={touched.Name && errors.Name}
@@ -350,15 +372,14 @@ export default function Userprofile({ navigation }) {
                     onBlur={handleBlur('Name')}
                     // returnKeyType="next"
                     blurOnSubmit={false}
-                    title='First name'
+                    title="First name"
                   />
                   <Styledtextinput
-                    title='Last name'
+                    title="Last name"
                     value={Lastname}
                     placeholder="Enter Your Last Name"
                     placeholderTextColor={colors.lightblack}
                     autoCapitalize="none"
-                    edit
                     autoComplete="name"
                     MaterialCommunityIcons
                     error={touched.Lastname && errors.Lastname}
@@ -367,7 +388,7 @@ export default function Userprofile({ navigation }) {
                     blurOnSubmit={false}
                   />
                   <Styledtextinput
-                    title='NMS-id/Registraion number'
+                    title="NMS-id/Registraion number"
                     value={NMSid}
                     placeholder="Your NMS id"
                     placeholderTextColor={colors.lightblack}
@@ -384,7 +405,7 @@ export default function Userprofile({ navigation }) {
                     flirt
                   />
                   <Styledtextinput
-                    title='Potision'
+                    title="Potision"
                     value={Position}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
@@ -393,7 +414,7 @@ export default function Userprofile({ navigation }) {
                     onChangeText={onChangePosition}
                   />
                   <Styledtextinput
-                    title='School'
+                    title="School"
                     value={School}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
@@ -402,7 +423,7 @@ export default function Userprofile({ navigation }) {
                     onChangeText={setSchool}
                   />
                   <Styledtextinput
-                    title='Department'
+                    title="Department"
                     value={Department}
                     placeholder="+91 00000 00000"
                     placeholderTextColor={colors.lightblack}
@@ -411,7 +432,7 @@ export default function Userprofile({ navigation }) {
                     onChangeText={setDepartment}
                   />
                   <Styledtextinput
-                    title='Mobile number'
+                    title="Mobile number"
                     value={Mobile}
                     placeholder="Enter Your Email address"
                     placeholderTextColor={colors.lightblack}
@@ -427,7 +448,7 @@ export default function Userprofile({ navigation }) {
                     onBlur={handleBlur('Mobile')}
                   />
                   <Styledtextinput
-                    title='Email'
+                    title="Email"
                     value={email}
                     placeholder="Enter Your Email address"
                     placeholderTextColor={colors.lightblack}

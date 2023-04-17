@@ -14,8 +14,11 @@ import {
   StatusBar,
   ImageBackground,
   Image,
+  Dimensions,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import α from 'color-alpha';
+
 import { colors } from '../constants';
 
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -27,20 +30,29 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import Hstack from '../component/Hstack';
 
+const deviceHeight = Dimensions.get('window').height;
+const deviceWidth = Dimensions.get('window').width;
+// const bgratio = 19 * 9
 const Styledtextinput = props => {
   const [text, onChangeText] = React.useState('');
   // https://godconnect.online/api/UserMgmtAPI/ProfileCheck
   const [hidePass, setHidePass] = React.useState(true);
 
   return (
-    <View>
+    <View
+      style={[
+        {
+          marginVertical: 10,
+        },
+        props.boxstyle,
+      ]}>
       <Text style={styles.customstyle}>{props.title}</Text>
       <View style={styles.inputstyle}>
         {!props.MaterialCommunityIcons ? (
           <FontAwesome
             name={props.icon}
             size={20}
-            color={colors.inputs}
+            color={colors.white}
             style={{
               marginBottom: -10,
             }}
@@ -49,7 +61,7 @@ const Styledtextinput = props => {
           <MaterialCommunityIcons
             name={props.icon}
             size={20}
-            color={colors.inputs}
+            color={colors.white}
             style={{
               marginBottom: -10,
             }}
@@ -60,14 +72,16 @@ const Styledtextinput = props => {
             marginLeft: 5,
             fontWeight: '400',
             fontSize: 15,
-            color: '#caf0f8',
+            color: colors.white,
+            // color: '#caf0f8',
             marginBottom: -10,
             flex: 1,
           }}
           value={text}
           secureTextEntry={hidePass ? true : false}
           placeholder={props.lable}
-          placeholderTextColor={colors.inputs}
+          // placeholderTextColor='green'
+          // placeholderTextColor="#000"
           autoCapitalize="none"
           {...props}
         />
@@ -75,7 +89,7 @@ const Styledtextinput = props => {
           <FontAwesome5
             name={hidePass ? 'eye-slash' : 'eye'}
             size={17}
-            color="#caf0f8"
+            color={colors.white}
             onPress={() => setHidePass(!hidePass)}
           />
         )}
@@ -117,13 +131,13 @@ export default function Loginscreen() {
     EmailId: Yup.string()
       .trim()
       // .matches(regex, 'MI ID must be of 8 Digits')
-      .min(8, 'MI ID must be of 8 Digits')
+      .min(1, 'MI ID must be of 1 Digits')
       .required('Required!')
-      .min(6, 'Minimum 6 characters is required'),
+      .min(1, 'Minimum 1 characters is required'),
 
     PWord: Yup.string()
       .trim()
-      .min(8, 'Password is too short!')
+      .min(1, 'Password is too short!')
       .required('Password is required!'),
   });
 
@@ -146,9 +160,10 @@ export default function Loginscreen() {
   };
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }}>
-      <StatusBar animated={true} backgroundColor={colors.secondary} />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+    // <KeyboardAvoidingView style={{ flex: 1 }}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+      <View style={{ flex: 1 }}>
+        <StatusBar animated={true} backgroundColor={α(colors.primary, 0.4)} />
         <ImageBackground
           // source={image}
           source={require('../assets/Images/BG-main.png')}
@@ -156,19 +171,25 @@ export default function Loginscreen() {
           style={{
             flex: 1,
             justifyContent: 'center',
+            width: deviceWidth,
+            height: deviceHeight,
           }}>
           <View
             style={{
-              // backgroundColor: colors.secondary,
-              padding: 15,
+              backgroundColor: α(colors.white, 0.7),
+              margin: 25,
               flex: 1,
-              paddingRight: 20,
+              paddingHorizontal: 20,
+              // paddingTop: 10,
+              borderRadius: 40,
+              borderTopRightRadius: 0,
+              borderBottomLeftRadius: 0,
             }}>
             <View
               style={{
                 flex: 1,
                 justifyContent: 'space-between',
-                paddingBottom: 10,
+                paddingBottom: 20,
                 // backgroundColor:''
               }}>
               <View>
@@ -181,14 +202,22 @@ export default function Loginscreen() {
                     // justifyContent: 'center',
                     height: logoHeight,
                     width: logoHeight * logoRatio,
-                    marginTop: 30,
-                  }} />
-                <Text style={styles.hitext}>Hi</Text>
-                <Text style={styles.logintext}>Log In Here</Text>
+                    marginTop: 15,
+                    marginBottom: 10,
+                  }}
+                />
+                {/* <Text style={styles.hitext}>Hi</Text> */}
+                <Text style={styles.logintext}>Welcome To MUJ NMS App</Text>
               </View>
+
               <View
                 style={{
-                  paddingBottom: 40,
+                  paddingBottom: 20,
+                  backgroundColor: α(colors.primary, 0.85),
+
+                  padding: 10,
+                  borderRadius: 25,
+                  zIndex: 500,
                 }}>
                 <Formik
                   initialValues={UserInfo}
@@ -197,7 +226,7 @@ export default function Loginscreen() {
                     setTimeout(() => {
                       formikActions.resetForm();
                       formikActions.setSubmitting(false);
-                    }, 4000);
+                    }, 5000);
                   }}
                   validationSchema={validationSchema}>
                   {({
@@ -209,45 +238,52 @@ export default function Loginscreen() {
                     handleBlur,
                     handleSubmit,
                   }) => {
-                    {
-                    }
                     const { EmailId, PWord } = values;
                     return (
                       <>
-                        <Styledtextinput
-                          // onChangeText={setEmailId}
-                          placeholderTextColor={colors.inputs}
-                          title="Enter NMS ID"
-                          placeholder="NMS ID"
-                          value={EmailId}
-                          autoCapitalize="none"
-                          icon="email"
-                          // keyboardType='email-address'
-                          maxLength={8}
-                          // keyboardType="numeric"
-                          MaterialCommunityIcons
-                          error={touched.EmailId && errors.EmailId}
-                          onChangeText={handleChange('EmailId')}
-                          onBlur={handleBlur('EmailId')}
-                          selectionColor={colors.white}
-                          password={false}
-                          secureTextEntry={false}
-                        />
-                        <Styledtextinput
-                          // onChangeText={setPWord}
-                          value={PWord}
-                          placeholder="Password"
-                          placeholderTextColor={colors.inputs}
-                          autoCapitalize="none"
-                          title="Enter your Password"
-                          icon="lock"
-                          // keyboardType='password'
-                          error={touched.PWord && errors.PWord}
-                          onChangeText={handleChange('PWord')}
-                          onBlur={handleBlur('PWord')}
-                          password
-                          selectionColor={colors.white}
-                        />
+                        <KeyboardAvoidingView
+                          style={{
+                            // marginBottom: 40,
+                          }}>
+                          <>
+                            <Styledtextinput
+                              // onChangeText={setEmailId}
+                              placeholderTextColor={colors.white}
+                              title="Enter NMS ID"
+                              placeholder="NMS ID"
+                              value={EmailId}
+                              autoCapitalize="none"
+                              icon="email"
+                              // keyboardType='email-address'
+                              maxLength={15}
+                              // keyboardType="numeric"
+                              MaterialCommunityIcons
+                              error={touched.EmailId && errors.EmailId}
+                              onChangeText={handleChange('EmailId')}
+                              onBlur={handleBlur('EmailId')}
+                              selectionColor={colors.white}
+                              password={false}
+                              secureTextEntry={false}
+                              boxstyle={{ marginTop: 20 }}
+                            />
+                            <Styledtextinput
+                              // onChangeText={setPWord}
+                              value={PWord}
+                              placeholder="Password"
+                              placeholderTextColor={colors.white}
+                              autoCapitalize="none"
+                              title="Enter your Password"
+                              icon="lock"
+                              // keyboardType='password'
+                              error={touched.PWord && errors.PWord}
+                              onChangeText={handleChange('PWord')}
+                              onBlur={handleBlur('PWord')}
+                              password
+                              selectionColor={colors.white}
+                            />
+                          </>
+
+                        </KeyboardAvoidingView>
 
                         <TouchableOpacity
                           submitting={isSubmitting}
@@ -270,7 +306,7 @@ export default function Loginscreen() {
                                 fontSize: 20,
                                 fontWeight: '700',
                                 // fontFamily: 'Roboto',
-                                color: colors.secondary,
+                                color: colors.primary,
                               }}>
                               Log In
                             </Text>
@@ -280,33 +316,12 @@ export default function Loginscreen() {
                     );
                   }}
                 </Formik>
-                {/* <Hstack centered styles={{ marginVertical: 15, }}>
-                <View
-                  style={styles.hline} />
-                <Text
-                  style={styles.ortext}>
-                  or
-                </Text>
-                <View
-                  style={styles.hline} />
-              </Hstack>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Home')
-                }}
-                style={styles.registerbutton}>
-                <Text
-                  style={styles.registertext}>
-                  Register
-                </Text>
-              </TouchableOpacity> */}
               </View>
             </View>
           </View>
         </ImageBackground>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
-    // </KeyboardavoidingWrapper>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -321,18 +336,17 @@ const styles = StyleSheet.create({
   },
   hitext: {
     fontSize: 40,
-    fontWeight: '700',
-    // fontFamily: 'Roboto',
-    color: colors.white,
+    fontWeight: '500',
+    color: colors.mytext,
     marginTop: 5,
   },
   logintext: {
-    fontSize: 25,
-    fontWeight: '600',
-    // fontFamily: 'Roboto',
-    color: colors.white,
-    marginTop: -5,
+    fontSize: 20,
+    fontWeight: '500',
+    color: colors.mytext,
+    marginTop: 5,
     marginBottom: 15,
+    textAlign: 'center',
   },
   hline: {
     height: 2,
@@ -374,20 +388,20 @@ const styles = StyleSheet.create({
   },
   inputstyle: {
     flexDirection: 'row',
-    width: '100%',
+    // width: '100%',
     // height: 40,
     marginHorizontal: 5,
-    borderBottomWidth: 1,
-    borderColor: colors.inputs,
+    borderBottomWidth: 1.5,
+    borderColor: colors.white,
     alignItems: 'center',
     marginTop: -10,
   },
   customstyle: {
-    fontSize: 15,
+    fontSize: 12,
     fontWeight: '500',
     // fontFamily: 'Roboto',
-    color: '#edf2f4',
-    marginTop: 10,
+    color: colors.white,
+    // marginTop: 20,
   },
   errortext: {
     color: 'red',

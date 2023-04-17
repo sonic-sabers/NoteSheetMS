@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabBar,
@@ -18,18 +18,21 @@ import {
   FlatList,
   ActivityIndicator,
 } from 'react-native';
-import { Options } from '../screens';
+import {Options} from '../screens';
 import Hstack from '../component/Hstack';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
-import { colors } from '../constants';
+import {colors} from '../constants';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import { Itemsdata } from '../database/Database';
-import { Rendertask } from '../screens/Options';
+import {Itemsdata} from '../database/Database';
+import {Rendertask} from '../screens/Options';
 import α from 'color-alpha';
+import {useSelector, useDispatch} from 'react-redux';
+import {changeCount} from '../redux/actions/counts';
+// import { increment, decrement } from '../redux/actions/countAction';
 
 const windowWidth = Dimensions.get('window').width;
-function MyTabBar({ state, descriptors, navigation }) {
+function MyTabBar({state, descriptors, navigation}) {
   // }));
   const [search, setSearch] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
@@ -37,6 +40,14 @@ function MyTabBar({ state, descriptors, navigation }) {
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
   const [Loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
+
+  const Counts = useSelector(store => store.count.count);
+
+  const handleIncrement = () => {
+    dispatch(changeCount(!Counts));
+  };
 
   const fetchdata = async () => {
     fetch('https://jsonplaceholder.typicode.com/posts')
@@ -48,8 +59,7 @@ function MyTabBar({ state, descriptors, navigation }) {
       })
       .catch(error => {
         setLoading(false);
-        Alert.alert('An issue occured while fetching data')
-        console.error(error);
+        Alert.alert('An issue occured while fetching data');
       });
   };
 
@@ -81,19 +91,6 @@ function MyTabBar({ state, descriptors, navigation }) {
     }
   };
 
-  const ItemSeparatorView = () => {
-    return (
-      // Flat List Item Separator
-      <View
-        style={{
-          height: 0.5,
-          width: '100%',
-          backgroundColor: '#C8C8C8',
-        }}
-      />
-    );
-  };
-
   const onRefresh = () => {
     setLoading(true);
     fetchdata();
@@ -110,7 +107,7 @@ function MyTabBar({ state, descriptors, navigation }) {
           padding: 10,
           // backgroundColor: α(colors.primary, 0.4),
         }}>
-        <Pressable style={{ flex: 1 }} onPress={() => setModalVisible(true)}>
+        <Pressable style={{flex: 1}} onPress={() => setModalVisible(true)}>
           <Hstack
             centered
             styles={{
@@ -125,12 +122,12 @@ function MyTabBar({ state, descriptors, navigation }) {
             <AntDesign
               name="search1"
               size={22}
-              style={{ color: '#00000099', marginLeft: 0 }}
+              style={{color: '#00000099', marginLeft: 0}}
             />
             <View
               // ref={searchRef}
               placeholder="Search notesheet here..."
-              style={{ flex: 1, marginLeft: 4, fontSize: 14, color: '#00000050' }}
+              style={{flex: 1, marginLeft: 4, fontSize: 14, color: '#00000050'}}
               placeholderTextColor="#00000050"
               value={search}
               pointerEvents="none"
@@ -175,17 +172,17 @@ function MyTabBar({ state, descriptors, navigation }) {
           flexDirection: 'row',
           // backgroundColor: '#caf0f830',
           borderBottomColor: '#ffffff',
-          // backgroundColor: α(colors.primary, 0.4),
-          borderBottomWidth: 1,
+          // backgroundColor: α(colors.primary, 0.00),
+          // borderBottomWidth: 1,
         }}>
         {state.routes.map((route, index) => {
-          const { options } = descriptors[route.key];
+          const {options} = descriptors[route.key];
           const label =
             options.tabBarLabel !== undefined
               ? options.tabBarLabel
               : options.title !== undefined
-                ? options.title
-                : route.name;
+              ? options.title
+              : route.name;
           const isFocused = state.index === index;
 
           const onPress = () => {
@@ -194,9 +191,11 @@ function MyTabBar({ state, descriptors, navigation }) {
               target: route.key,
               canPreventDefault: true,
             });
-
+            {
+              /* handleIncrement(); */
+            }
             if (!isFocused && !event.defaultPrevented) {
-              navigation.navigate({ name: route.name, merge: true });
+              navigation.navigate({name: route.name, merge: true});
             }
           };
 
@@ -211,7 +210,7 @@ function MyTabBar({ state, descriptors, navigation }) {
             <TouchableOpacity
               key={route.name}
               accessibilityRole="button"
-              accessibilityState={isFocused ? { selected: true } : {}}
+              accessibilityState={isFocused ? {selected: true} : {}}
               onPress={onPress}
               onLongPress={onLongPress}
               style={{
@@ -220,7 +219,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                 alignItems: 'center',
                 borderBottomColor: isFocused ? colors.primary : 'transparent',
                 borderBottomWidth: 1,
-                // marginBottom: -1,
+                marginBottom: 1,
               }}>
               <Animated.Text
                 style={{
@@ -229,7 +228,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                   textAlign: 'center',
                   // ...subTextThic,
                   color: isFocused ? colors.primary : '#495057',
-                  fontWeight: '600'
+                  fontWeight: '600',
                 }}>
                 {label}
               </Animated.Text>
@@ -251,10 +250,9 @@ function MyTabBar({ state, descriptors, navigation }) {
             onPress={() => {
               setModalVisible(!modalVisible);
               searchFilterFunction('');
-
             }}
-            style={{ flex: 1, backgroundColor: '#fff' }}>
-            <Hstack centered styles={{ width: '100%' }}>
+            style={{flex: 1, backgroundColor: '#fff'}}>
+            <Hstack centered styles={{width: '100%'}}>
               <Pressable onPress={() => setModalVisible(false)}>
                 <Feather
                   name="arrow-left"
@@ -285,7 +283,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                 <AntDesign
                   name="search1"
                   size={22}
-                  style={{ color: '#00000099', marginLeft: -5 }}
+                  style={{color: '#00000099', marginLeft: -5}}
                 />
                 <TextInput
                   // ref={searchRef}
@@ -303,17 +301,17 @@ function MyTabBar({ state, descriptors, navigation }) {
                   onChangeText={searchFilterFunction}
                   value={search}
                   underlineColorAndroid="transparent"
-                // onChangeText={txt => {
-                //   // searchFilterFunction(txt);
-                //   setSearch(txt);
-                // }}
+                  // onChangeText={txt => {
+                  //   // searchFilterFunction(txt);
+                  //   setSearch(txt);
+                  // }}
                 />
                 {search.length ? (
                   <TouchableOpacity onPress={() => searchFilterFunction('')}>
                     <AntDesign
                       name="close"
                       size={22}
-                      style={{ color: '#00000099', marginRight: 8 }}
+                      style={{color: '#00000099', marginRight: 8}}
                     />
                   </TouchableOpacity>
                 ) : null}
@@ -328,12 +326,12 @@ function MyTabBar({ state, descriptors, navigation }) {
               onEndReachedThreshold={0.5}
               initialNumToRender={10}
               maxToRenderPerBatch={10}
-              style={{ flex: 1, backgroundColor: colors.tempbg }}
+              style={{flex: 1, backgroundColor: colors.tempbg}}
               // style={{ flex: 1, backgroundColor: α(colors.primary, 0.1) }}
               contentContainerStyle={[{}]}
-              ListFooterComponent={<View style={{ paddingBottom: 70 }} />}
+              ListFooterComponent={<View style={{paddingBottom: 70}} />}
               ListEmptyComponent={
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   {Loading ? (
                     <View
                       style={{
@@ -370,7 +368,7 @@ function MyTabBar({ state, descriptors, navigation }) {
                   )}
                 </View>
               }
-              renderItem={({ item, index }) => {
+              renderItem={({item, index}) => {
                 return (
                   <Rendertask
                     item={item}
@@ -390,24 +388,11 @@ function MyTabBar({ state, descriptors, navigation }) {
   );
 }
 
-function OthersScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text
-        style={{
-          fontSize: 20,
-          fontWeight: '400',
-          color: '#00000060',
-        }}>
-        Other Notesheets
-      </Text>
-    </View>
-  );
-}
-
 const Tab = createMaterialTopTabNavigator();
 
 function MyTabs() {
+  const Counts = useSelector(store => store.count.count);
+
   return (
     <Tab.Navigator
       initialRouteName="All"
@@ -419,28 +404,34 @@ function MyTabs() {
         swipeEnabled: true,
       }}
       tabBar={props => <MyTabBar theme {...props} />}
-      sceneContainerStyle={{ backgroundColor: '#bceaba20' }}
+      sceneContainerStyle={{backgroundColor: '#bceaba20'}}
       initialLayout={{
         width: Dimensions.get('window').width,
         // backgroundColor: theme?.card_bg || '#fff',
         backgroundColor: '#ffffff',
       }}>
-      <Tab.Screen
-        name="C2"
-        // component={Options}
-        children={() => (
-          <Options showbuttons Approved filterData="Permission" />
-        )}
-        options={{
-          tabBarLabel: 'C2',
-          // tabBarItemStyle: { width: 10 },
-          tabBarItemStyle: { minWidht: '10', backgroundColor: 'red' },
-          tabBarContentContainerStyle: { minWidht: '10', backgroundColor: 'red' },
-        }}
-      />
+      {Counts ? (
+        <Tab.Screen
+          name="C2"
+          // component={Options}
+          children={() => (
+            <Options showbuttons Approved filterData="Permission" />
+          )}
+          options={{
+            tabBarLabel: 'C2',
+            // tabBarItemStyle: { width: 10 }, showFilter
+            tabBarItemStyle: {minWidht: '10', backgroundColor: 'red'},
+            tabBarContentContainerStyle: {
+              minWidht: '10',
+              backgroundColor: 'red',
+            },
+          }}
+        />
+      ) : null}
       <Tab.Screen
         name="All"
         component={Options}
+        // children={() => <Options showbuttons={false} />}
         options={{
           tabBarLabel: 'All',
           tabBarBounces: true,
@@ -455,20 +446,24 @@ function MyTabs() {
       <Tab.Screen
         name="Approved"
         // component={Options}
-        children={() => <Options Approved filterData="Approved" />}
-        options={{ tabBarLabel: 'Approved' }}
+        children={() => <Options filterData="Approved" />}
+        // children={() => <Options Approved filterData="Approved" />}
+        options={{tabBarLabel: 'Approved'}}
       />
       <Tab.Screen
         name="Pending"
         // component={Options}
-        children={() => <Options filterData="Pending" />}
-        options={{ tabBarLabel: 'Pending' }}
+        children={() => (
+          <Options showFilter={Counts ? true : null} filterData="Pending" />
+        )}
+        options={{tabBarLabel: 'Pending'}}
       />
       <Tab.Screen
         name="Others"
-        // component={Options}
-        children={() => <Options filterData="Others" />}
-        options={{ tabBarLabel: 'Others' }}
+        children={() => (
+          <Options showFilter={Counts ? true : null} filterData="Others" />
+        )}
+        options={{tabBarLabel: 'Others'}}
       />
     </Tab.Navigator>
   );

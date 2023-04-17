@@ -17,10 +17,20 @@ export const Itemsdata = [
     description:
       "Gate session has to organised under the department of SCSE for the students and there will be a guest speaeker who recently quslified for GATE 2023 with good score and have sound knowlwdge about the Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
     assignor: 'Dr. Amit Garg',
-    isAvailable: true,
     status: 'Permission',
-    masterData:
-      "To host Gate session has to organised under the department of SCSE for the students and there will be a guest speaeker who recently quslified for GATE 2023 with good score and have sound knowlwdge about the Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+    School: '123',
+    Dept: '123',
+    Objective: '123',
+    // isAvailable: true,
+    yourPermission: false,
+    Converner: [
+      {Name: ' Ashish Singh', id: 123},
+      {Name: ' Ashish Rawat', id: 223},
+    ],
+    approvedBy: [
+      {Name: ' Ashish Singh', id: 123},
+      {Name: ' Ashish Rawat', id: 223},
+    ],
   },
   {
     id: 2,
