@@ -1,10 +1,13 @@
 ## About
 Brief description of the project
 In universities, every faculty member is assigned tasks regularly. These are mostly assigned manually which is chaotic and leads to incomplete work. Besides, getting attestations from the senior authorities who run busy, is laborious. This approval process can be simplified with an approval system. An approval system is any official and recognized process an organization has in place to handle the approval of note sheet. Because approval processes can be complex and change many times throughout the lifetime it is necessary to have a simple and user-friendly system for the same. Note sheets become the official verification and validation for any authority in question. This further nullifies the problem of the loss of documents (note sheets
-![image](https://user-images.githubusercontent.com/73551845/233448824-dd9f84e6-ba99-4d20-98e0-fa0733c75c6f.png)
 
 
 ## Demo -
+
+
+
+https://user-images.githubusercontent.com/73551845/233449153-d2e1b7e6-ff14-48bd-936c-a4e5899ad0d8.mp4
 
 
 ## Configuration Steps
